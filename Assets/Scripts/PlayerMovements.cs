@@ -25,6 +25,7 @@ public class PlayerMovements : MonoBehaviour
 
         // Dostosowujemy prędkość na podstawie dystansu (przy użyciu wartości ograniczonej)
         float speed = Mathf.Lerp(minSpeed, maxSpeed, distance / accelerationFactor);
+        Debug.Log("Speed: " + speed);
 
         // Obliczamy nową pozycję gracza przy użyciu fizyki
         Vector2 newPosition = Vector2.MoveTowards(rb.position, mousePosition, speed * Time.deltaTime);
