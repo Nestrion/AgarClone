@@ -11,7 +11,24 @@ public class InfiniteTilemap : MonoBehaviour
 
     private Vector3Int previousTilePosition;
 
+    void Start()
+    {
+        InitialGeneration();
+    }
+
     void Update()
+    {
+        GenerateInfiniteGridOnCamereMovement();
+    }
+
+    void InitialGeneration()
+    {
+        Vector3 cameraPosition = mainCamera.transform.position;
+        Vector3Int tilePosition = tilemap.WorldToCell(cameraPosition);
+        GenerateInfiniteGrid(tilePosition);
+    }
+
+    void GenerateInfiniteGridOnCamereMovement()
     {
         // Get camera position in world space
         Vector3 cameraPosition = mainCamera.transform.position;
