@@ -25,7 +25,7 @@ Before running or contributing to this project, make sure you have the following
 ### Running the Game
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/agar-clone.git
+   git clone git@github.com:Nestrion/AgarClone.git
    cd agar-clone
 
 ### Open the project in Unity:
