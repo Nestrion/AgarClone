@@ -28,10 +28,7 @@ public class PlayerMovements : MonoBehaviour
 
         float viewportDistance = Mathf.Min(Vector2.Distance(playerViewportPos, mouseViewportPos), maxSpeedRadius) / maxSpeedRadius;
         float finalSpeed = speed * viewportDistance;
-        Debug.Log(finalSpeed);
 
-        // seems like MoveTowards takes into account the distance and it changes the speed, even if speed doesnt change
-        // Vector3 newPosition = Vector3.MoveTowards(transform.position, worldInput, finalSpeed * Time.deltaTime);
         Vector3 newPosition = transform.position + (worldInput - transform.position).normalized * finalSpeed * Time.deltaTime;
 
         newPosition.z = transform.position.z;
