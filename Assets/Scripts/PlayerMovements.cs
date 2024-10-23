@@ -1,35 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovements : MonoBehaviour
 {
-    public float maxSpeed = 5f;  // Maksymalna prędkość gracza
-    public float minSpeed = 1f;  // Minimalna prędkość, aby uniknąć całkowitego zatrzymania
-    public float accelerationFactor = 2f;  // Współczynnik kontroli przyspieszenia
-    private Rigidbody2D rb;  // Referencja do komponentu Rigidbody2D
+    public float speed = 4f;
 
-    void Start()
-    {
-        // Pobieramy komponent Rigidbody2D przypisany do gracza
-        rb = GetComponent<Rigidbody2D>();
-    }
+    // Distance from the player in screen space at which player achieves max speed
+    [SerializeField, Range(0.1f, 1)] private float maxSpeedRadius = 0.25f;
 
     void Update()
     {
-        // Pobieramy pozycję myszy w świecie gry
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Move();
+    }
 
-        // Obliczamy dystans między graczem a pozycją myszy
-        float distance = Vector2.Distance(rb.position, mousePosition);
+    void Move()
+    {
+        Camera cam = Camera.main;
+        Vector3 worldInput = cam.ScreenToWorldPoint(Input.mousePosition);
 
-        // Dostosowujemy prędkość na podstawie dystansu (przy użyciu wartości ograniczonej)
-        float speed = Mathf.Lerp(minSpeed, maxSpeed, distance / accelerationFactor);
+        // values get clamped because viewport values can go beyond 1 and under 0 
+        // both have player.z position, so the distance of the vector doesn't get affected by the z axis
+        Vector3 playerViewportPos = cam.WorldToViewportPoint(transform.position);
+        playerViewportPos = new Vector3(Mathf.Clamp(playerViewportPos.x, 0, 1), Mathf.Clamp(playerViewportPos.y, 0, 1), playerViewportPos.z);
 
-        // Obliczamy nową pozycję gracza przy użyciu fizyki
-        Vector2 newPosition = Vector2.MoveTowards(rb.position, mousePosition, speed * Time.deltaTime);
+        Vector3 mouseViewportPos = cam.ScreenToViewportPoint(Input.mousePosition);
+        mouseViewportPos = new Vector3(Mathf.Clamp(mouseViewportPos.x, 0, 1), Mathf.Clamp(mouseViewportPos.y, 0, 1), playerViewportPos.z);
 
-        // Ruch przy użyciu Rigidbody2D
-        rb.MovePosition(newPosition);
+
+        float viewportDistance = Mathf.Min(Vector2.Distance(playerViewportPos, mouseViewportPos), maxSpeedRadius) / maxSpeedRadius;
+        float finalSpeed = speed * viewportDistance;
+
+        Vector3 newPosition = transform.position + (worldInput - transform.position).normalized * finalSpeed * Time.deltaTime;
+
+        newPosition.z = transform.position.z;
+        transform.position = newPosition;
     }
 }
