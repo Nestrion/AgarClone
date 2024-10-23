@@ -26,7 +26,7 @@ Before running or contributing to this project, make sure you have the following
 1. Clone the repository:
    ```bash
    git clone git@github.com:Nestrion/AgarClone.git
-   cd agar-clone
+   cd AgarClone
 
 ### Open the project in Unity:
 1. Launch **Unity Hub**.
