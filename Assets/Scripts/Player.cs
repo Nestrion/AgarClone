@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     private int playerScore = 10;
 
-    private int PlayerScore
+    public int PlayerScore
     {
         get { return playerScore; }
         set { playerScore = value; }
