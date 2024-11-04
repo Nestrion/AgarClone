@@ -18,7 +18,7 @@ public class CameraFollowSmooth2D : MonoBehaviour
 
         // Ustawiamy nową pozycję kamery
         transform.position = smoothedPosition;
-        
-        
+       
     }
+
 }
