@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class FoodConsumer : MonoBehaviour
@@ -9,15 +10,27 @@ public class FoodConsumer : MonoBehaviour
     // will refactor
     Player player;
 
+    Camera mainCamera;
+
+    private float targetOrthographicSize;
+    private float lerpSpeed = 2f;
+
     void Start()
     {
         circleCollider2D = GetComponent<CircleCollider2D>();
         player = GetComponent<Player>();
+        mainCamera = Camera.main;
+        targetOrthographicSize = mainCamera.orthographicSize;
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
         ConsumeFood(other);
+    }
+
+    private void Update()
+    {
+        mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * lerpSpeed);
     }
 
     private void ConsumeFood(Collider2D other)
@@ -33,9 +46,11 @@ public class FoodConsumer : MonoBehaviour
 
                 // will refactor
                 player.PlayerScore += 1;
+
+                player.PlayerMass += food.FoodMass;
+                targetOrthographicSize += player.PlayerMass*0.001f;
             }
         }
-
     }
 
 }

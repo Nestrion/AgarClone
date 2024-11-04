@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class Food : MonoBehaviour
 {
+    private float foodMass = 0.5f;
+
+    public float FoodMass
+    {
+        get { return foodMass; }
+    }
 
     public void Consume()
     {

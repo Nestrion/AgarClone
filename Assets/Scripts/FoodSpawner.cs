@@ -17,6 +17,20 @@ public class FoodSpawner : MonoBehaviour
     // List to track spawned food objects (optional for managing them later)
     private List<GameObject> spawnedFood;
 
+    Color[] colors = new Color[]
+    {
+        new Color(1f, 0f, 0f),     // Czerwony
+        new Color(1f, 0.5f, 0f),   // Pomarañczowy
+        new Color(1f, 1f, 0f),     // ¯ó³ty
+        new Color(0f, 1f, 0f),     // Zielony
+        new Color(0f, 0f, 1f),     // Niebieski
+        new Color(0f, 0.5f, 1f),   // Jasnoniebieski
+        new Color(0.5f, 0f, 0.5f), // Fioletowy
+        new Color(0.5f, 0.5f, 0.5f), // Szary
+        new Color(0.2f, 0.2f, 0.2f), // Ciemnoszary
+        new Color(0f, 0f, 0f),     // Czarny
+    };
+
     void Start()
     {
         // Initialize the list to hold spawned food
@@ -33,6 +47,11 @@ public class FoodSpawner : MonoBehaviour
         {
             Vector2 randomPosition = GetRandomPosition();
             GameObject food = Instantiate(Food, randomPosition, Quaternion.identity);
+
+            SpriteRenderer renderer = food.GetComponent<SpriteRenderer>();
+            Color randomColor = colors[Random.Range(0, colors.Length)];
+            renderer.material.color = randomColor;
+
             spawnedFood.Add(food);
         }
     }
