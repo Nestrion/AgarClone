@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     private int playerScore = 10;
     private float playerMass = 10f;
+    public bool IsSplitted { get; set; } = false;
+    public bool IsMergingAllowed { get; set; } = false;
     Player player;
 
     public int PlayerScore
