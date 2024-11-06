@@ -724,7 +724,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 144326352}
+      - m_Target: {fileID: 144326353}
         m_TargetAssemblyTypeName: mainMenu, Assembly-CSharp
         m_MethodName: QuiteGame
         m_Mode: 1
