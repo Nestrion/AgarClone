@@ -19,7 +19,7 @@ public class PlayerScoreText : MonoBehaviour
 
     void Update()
     {
-        text.text = "Score: " + player.PlayerScore.ToString();
+        text.text = "Score: " + (player.PlayerScore - 11).ToString();
     }
 
 }
