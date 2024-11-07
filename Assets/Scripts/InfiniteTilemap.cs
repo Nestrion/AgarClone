@@ -51,7 +51,7 @@ public class InfiniteTilemap : MonoBehaviour
     void GenerateInfiniteGrid(Vector3Int centerTilePosition)
     {
         // Define how far around the camera to generate tiles
-        int range = 10;
+        int range = 15;
 
         for (int x = -range; x <= range; x++)
         {
