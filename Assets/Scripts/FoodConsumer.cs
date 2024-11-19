@@ -48,7 +48,7 @@ public class FoodConsumer : MonoBehaviour
                 player.PlayerScore += 1;
 
                 player.PlayerMass += food.FoodMass;
-                targetOrthographicSize += player.PlayerMass*0.001f;
+                targetOrthographicSize += player.PlayerMass * 0.001f;
             }
         }
     }
