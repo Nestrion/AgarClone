@@ -2473,6 +2473,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c927f2abd6137d64e8825e718c422394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Food: {fileID: 4199708226420983361, guid: 15705f75533436c4e9d9d321c105cc9f, type: 3}
+  foodSpeed: 2
+  minimumMassToDrop: 10
 --- !u!1 &1250188309
 GameObject:
   m_ObjectHideFlags: 0
