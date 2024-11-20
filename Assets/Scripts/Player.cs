@@ -1,19 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private int playerScore = 10;
+    private int playerScore = 0;
+    public string playerName = "placeholder";
     private float playerMass = 10f;
     public bool IsSplitted { get; set; } = false;
     public bool IsMergingAllowed { get; set; } = false;
     Player player;
 
+    public event Action<int> OnScoreChanged;
+
+
     public int PlayerScore
     {
         get { return playerScore; }
-        set { playerScore = value; }
+        set
+        {
+            if (playerScore != value)
+            {
+                playerScore = value;
+                OnScoreChanged?.Invoke(playerScore);
+            }
+        }
     }
 
     public float PlayerMass
