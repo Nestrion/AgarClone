@@ -9,6 +9,7 @@ public class FoodConsumer : MonoBehaviour
 
     // will refactor
     Player player;
+    public FoodSpawner foodSpawner;
 
     Camera mainCamera;
 
@@ -38,19 +39,20 @@ public class FoodConsumer : MonoBehaviour
         float distanceBetweenCenters = Vector2.Distance(transform.position, other.transform.position);
 
         if (distanceBetweenCenters <= circleCollider2D.radius * transform.lossyScale.x)
-        {
-            Food food = other.gameObject.GetComponent<Food>();
-            if (food == true)
             {
-                food.Consume();
+                Food food = other.gameObject.GetComponent<Food>();
+                if (food != null)
+                {
+                    // Get a new valid position for the food
+                    Vector2 newPosition = foodSpawner.GetRandomPosition();
+                    food.Relocate(newPosition);
 
-                // will refactor
-                player.PlayerScore += 1;
-
-                player.PlayerMass += food.FoodMass;
-                targetOrthographicSize += player.PlayerMass * 0.001f;
+                    // Update player properties
+                    player.PlayerScore += 1;
+                    player.PlayerMass += food.FoodMass;
+                    targetOrthographicSize += player.PlayerMass * 0.001f;
+                }
             }
-        }
     }
 
 }
