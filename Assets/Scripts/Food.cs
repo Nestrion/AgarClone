@@ -12,8 +12,8 @@ public class Food : MonoBehaviour
         get { return foodMass; }
     }
 
-    public void Consume()
+    public void Relocate(Vector2 newPosition)
     {
-        Destroy(gameObject);
+        transform.position = newPosition;
     }
 }
