@@ -1,13 +1,17 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     Player player;
+    public GameObject Food;
     private float splitDistance = 0.5f; // Distance the new player will be created from the original player
     private float minMassToSplit = 10f; // Minimum mass required to allow splitting
     private float splitVelocity = 10f; // Initial velocity for the split player
-
+    private float foodMass = 0.5f; // Mass of each food dropped
+    public float foodSpeed = 2f; // Speed of the dropped food
+    public float minimumMassToDrop = 10f; // Minimum mass required to drop food
     private void Update()
     {
         player = GetComponent<Player>();
@@ -16,7 +20,10 @@ public class PlayerController : MonoBehaviour
         {
             SplitPlayer();
         }
-
+        if (Input.GetKeyDown(KeyCode.W)) // Press "W" to drop food
+        {
+            DropMassAsFood();
+        }
         player.UpdateScale();
     }
 
@@ -81,4 +88,65 @@ public class PlayerController : MonoBehaviour
             player.UpdateScale();
         }
     }
+
+    private void DropMassAsFood()
+    {
+        // Check if the player has enough mass to drop food
+        if (player.PlayerMass > minimumMassToDrop)
+        {
+            player.PlayerMass -= foodMass; // Decrease the player's mass by the food's mass
+
+            // Get the mouse position in world space
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            // Call the FoodSpawner to spawn food near the player
+            SpawnFoodNearPlayer(transform.position, mousePosition, foodMass, foodSpeed);
+
+            Debug.Log($"Food dropped! Player mass is now {player.PlayerMass}");
+        }
+        else
+        {
+            Debug.Log("Not enough mass to drop food!");
+        }
+    }
+
+    public void SpawnFoodNearPlayer(Vector2 playerPosition, Vector2 mousePosition, float foodMass, float foodSpeed)
+    {
+        // Calculate direction towards the mouse
+        Vector2 directionToMouse = (mousePosition - playerPosition).normalized;
+
+        // Spawn position near the player in the direction of the mouse
+        Vector2 spawnPosition = playerPosition + directionToMouse * (0.09f * player.PlayerMass);
+
+        // Instantiate the food at the calculated spawn position
+        GameObject food = Instantiate(Food, spawnPosition, Quaternion.identity);
+
+        // Assign mass (you can set it to player mass or the defined food mass)
+        Rigidbody2D rb = food.GetComponent<Rigidbody2D>();
+        rb.mass = foodMass;
+
+        food.transform.localScale = food.transform.localScale * 1.5f;
+
+        SpriteRenderer renderer = food.GetComponent<SpriteRenderer>();
+        Color randomColor = new Color(1f, 1f, 0f);
+        renderer.material.color = randomColor;
+
+        // Apply initial velocity towards the mouse position
+        rb.velocity = directionToMouse * foodSpeed;
+
+        StartCoroutine(ReduceVelocityOverTime(rb));
+    }
+
+    private IEnumerator ReduceVelocityOverTime(Rigidbody2D rb)
+{
+    // Wait for 2 seconds
+    yield return new WaitForSeconds(2f);
+
+    // Gradually apply drag to reduce velocity smoothly
+    rb.drag = 2f; // Adjust drag value based on how quickly you want it to slow down
+
+    // Optionally, reset the drag value after a while if you don't want it to last forever
+    yield return new WaitForSeconds(2f); // Keep drag for an additional 2 seconds
+    rb.drag = 0f; // Reset drag after deceleration period
+}
 }
