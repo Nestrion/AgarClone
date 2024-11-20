@@ -70,8 +70,8 @@ public class PlayerController : MonoBehaviour
 
             Debug.Log("PLAYER NOW: " + player.PlayerMass.ToString());
             Debug.Log("SPLITTED: " + playerSplitted.PlayerMass.ToString());
-    
-            StartCoroutine(MergeBallsAfterDelay(20f));
+
+            StartCoroutine(MergeBallsAfterDelay(4f));
         }
     }
 
