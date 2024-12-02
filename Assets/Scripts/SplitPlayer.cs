@@ -24,6 +24,7 @@ public class SplitPlayer : MonoBehaviour
             // Only apply pulling force if the distance is greater than the minimumDistanceToStop
             if (distanceToOriginal > minimumDistanceToStop + (originalPlayer.PlayerMass * massStopScaleFactor))
             {
+                
                 // Apply a pulling force towards the original player
                 Vector3 direction = (originalPlayer.transform.position - transform.position).normalized;
                 if (rb != null)

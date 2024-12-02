@@ -509,6 +509,76 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1585013896}
   isPaused: 0
+--- !u!1 &68965788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 68965790}
+  - component: {fileID: 68965789}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Audio
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &68965789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68965788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7135de2efb2b624f8d4e5e461dee0d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: HitVirus
+    clip: {fileID: 8300000, guid: 9abf26415e3d021439ca6473d2d20992, type: 3}
+    volume: 1
+    pitch: 1.3
+    source: {fileID: 0}
+  - name: SplitVirus
+    clip: {fileID: 8300000, guid: 3cd4bbd23b1ffc846a7293f9ae3458ed, type: 3}
+    volume: 0.9
+    pitch: 1.3
+    source: {fileID: 0}
+  - name: ConnectPlayer
+    clip: {fileID: 8300000, guid: 7462a0d743b81f640a10ab1849169b8f, type: 3}
+    volume: 1
+    pitch: 1.3
+    source: {fileID: 0}
+  - name: DropMass
+    clip: {fileID: 8300000, guid: 4d865c1088b3efa4cb9956029f0625e8, type: 3}
+    volume: 1
+    pitch: 1.3
+    source: {fileID: 0}
+  - name: FoodSound
+    clip: {fileID: 8300000, guid: 026b2bbfe2c0b6e4fab8e8d371e0a8ae, type: 3}
+    volume: 0.25
+    pitch: 1
+    source: {fileID: 0}
+--- !u!4 &68965790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68965788}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &77817786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,7 +1574,7 @@ GameObject:
   - component: {fileID: 834559160}
   m_Layer: 0
   m_Name: Virus
-  m_TagString: Untagged
+  m_TagString: Virus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3717,7 +3787,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: 2f62c535a308a26edae0b6cb3a93528b, type: 3}
   m_Color: {r: 0.764151, g: 0.11894804, b: 0.33749047, a: 1}
   m_FlipX: 0
@@ -3857,3 +3927,4 @@ SceneRoots:
   - {fileID: 417310236}
   - {fileID: 1899999998}
   - {fileID: 834559163}
+  - {fileID: 68965790}

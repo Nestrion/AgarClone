@@ -10,16 +10,27 @@ public class Virus : MonoBehaviour
     public float baseStopDistance = 1.5f; // Odległość zatrzymania przyciągania
     public float massStopScaleFactor = 0.1f; // Skala odległości zatrzymania na podstawie masy
 
+    private AudioManager audioManager;
+
+    private void Start()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.GetComponent<CircleCollider2D>().radius * collision.transform.lossyScale.x);
         Debug.Log(gameObject.GetComponent<CircleCollider2D>().radius * transform.lossyScale.x);
+        // Odtwórz dźwięk zetknięcia z wirusem
+        audioManager.Play("HitVirus");
 
         // Sprawdź, czy obiekt, który dotknął wirusa, to gracz
         if (collision.gameObject.CompareTag("Player") &&
             collision.gameObject.GetComponent<CircleCollider2D>().radius * collision.transform.lossyScale.x >
             gameObject.GetComponent<CircleCollider2D>().radius * transform.lossyScale.x)
         {
+            
+
             GameObject player = collision.gameObject;
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
 
@@ -30,6 +41,9 @@ public class Virus : MonoBehaviour
                 float playerMass = collision.gameObject.GetComponent<Player>().PlayerMass; // Liczba małych kół po rozpadzie
                 float numberOfSmallCircles = (playerMass / chunkSize) - 1;
                 float lastChunkAdditionalSize = playerMass % chunkSize;
+
+                // Odtwórz dźwięk podziału gracza
+                audioManager.Play("SplitVirus");
 
                 // Rozdzielenie na mniejsze koła
                 for (int i = 0; i < numberOfSmallCircles; i++)
@@ -71,6 +85,9 @@ public class Virus : MonoBehaviour
     private IEnumerator MergeBallsAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
+        // Odtwórz dźwięk zlaczenia gracza
+        audioManager.Play("ConnectPlayer");
 
         GameObject[] splittedPlayersObjects = GameObject.FindGameObjectsWithTag("playerSplitted");
 

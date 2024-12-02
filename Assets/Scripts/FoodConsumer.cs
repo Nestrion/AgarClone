@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class FoodConsumer : MonoBehaviour
 {
+    private AudioManager audioManager;
+
     CircleCollider2D circleCollider2D;
 
     // will refactor
@@ -18,6 +20,7 @@ public class FoodConsumer : MonoBehaviour
 
     void Start()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         circleCollider2D = GetComponent<CircleCollider2D>();
         player = GetComponent<Player>();
         mainCamera = Camera.main;
@@ -46,6 +49,9 @@ public class FoodConsumer : MonoBehaviour
                     // Get a new valid position for the food
                     Vector2 newPosition = foodSpawner.GetRandomPosition();
                     food.Relocate(newPosition);
+
+                    // Odtwórz dźwięk jedzenia
+                    audioManager.Play("FoodSound");
 
                     // Update player properties
                     player.PlayerScore += 1;

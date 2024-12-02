@@ -12,6 +12,14 @@ public class PlayerController : MonoBehaviour
     private float foodMass = 0.5f; // Mass of each food dropped
     public float foodSpeed = 2f; // Speed of the dropped food
     public float minimumMassToDrop = 10f; // Minimum mass required to drop food
+
+    private AudioManager audioManager;
+
+    private void Start()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     private void Update()
     {
         player = GetComponent<Player>();
@@ -48,6 +56,9 @@ public class PlayerController : MonoBehaviour
             // Calculate the direction from the player to the mouse position
             Vector3 direction = (mousePosition - transform.position).normalized;
 
+            // Odtwórz dźwięk podziału gracza
+            audioManager.Play("SplitVirus");
+
             // Instantiate the new player at the specified distance in the direction of the mouse
             Player playerSplitted = Instantiate(player, transform.position + direction * splitDistance, Quaternion.identity);
             player.PlayerMass /= 2f; // Divide mass by 2 for the original player
@@ -72,12 +83,17 @@ public class PlayerController : MonoBehaviour
             Debug.Log("SPLITTED: " + playerSplitted.PlayerMass.ToString());
     
             StartCoroutine(MergeBallsAfterDelay(20f));
+
+            
         }
     }
 
     private IEnumerator MergeBallsAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
+        // Odtwórz dźwięk zlaczenia gracza
+        audioManager.Play("ConnectPlayer");
 
         GameObject[] splittedPlayersObjects = GameObject.FindGameObjectsWithTag("playerSplitted");
 
@@ -101,6 +117,9 @@ public class PlayerController : MonoBehaviour
 
             // Call the FoodSpawner to spawn food near the player
             SpawnFoodNearPlayer(transform.position, mousePosition, foodMass, foodSpeed);
+
+            // Odtwórz dźwięk zrzucania masy
+            audioManager.Play("DropMass");
 
             Debug.Log($"Food dropped! Player mass is now {player.PlayerMass}");
         }

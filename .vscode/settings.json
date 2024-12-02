@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "AgarClone.sln"
+    "dotnet.defaultSolution": "AgarClone4.sln"
 }
