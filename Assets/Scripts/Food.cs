@@ -12,6 +12,11 @@ public class Food : MonoBehaviour
         get { return foodMass; }
     }
 
+    public void SetFoodMass(float foodMassValue)
+    {
+        foodMass = foodMassValue;
+    }
+
     public void Relocate(Vector2 newPosition)
     {
         transform.position = newPosition;

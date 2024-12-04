@@ -22,7 +22,6 @@ public class FoodSpawner : MonoBehaviour
         new Color(1f, 0f, 0f),     // Czerwony
         new Color(1f, 0.5f, 0f),   // Pomara�czowy
         new Color(1f, 1f, 0f),     // ��ty
-        new Color(0f, 1f, 0f),     // Zielony
         new Color(0f, 0f, 1f),     // Niebieski
         new Color(0f, 0.5f, 1f),   // Jasnoniebieski
         new Color(0.5f, 0f, 0.5f), // Fioletowy
@@ -51,6 +50,10 @@ public class FoodSpawner : MonoBehaviour
                 
                 GameObject food = Instantiate(Food, randomPosition, Quaternion.identity);
 
+                float minScale = 0.40f;
+                float maxScale = 0.80f;
+                float randomScale = Random.Range(minScale, maxScale);
+                food.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
                 SpriteRenderer renderer = food.GetComponent<SpriteRenderer>();
                 Color randomColor = colors[Random.Range(0, colors.Length)];
                 renderer.material.color = randomColor;
