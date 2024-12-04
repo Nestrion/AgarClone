@@ -2,21 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class FoodSpawner : MonoBehaviour
 {
     // Food prefab to spawn
+    /// <summary>
+    /// The food
+    /// </summary>
     public GameObject Food;
 
     // How many food items we want to spawn
+    /// <summary>
+    /// The food count
+    /// </summary>
     public int foodCount;
 
     // Spawn area boundaries (use a square or rectangular area)
+    /// <summary>
+    /// The spawn area minimum
+    /// </summary>
     public Vector2 spawnAreaMin = new Vector2(-28, -28);
+    /// <summary>
+    /// The spawn area maximum
+    /// </summary>
     public Vector2 spawnAreaMax = new Vector2(28, 28);
 
     // List to track spawned food objects (optional for managing them later)
+    /// <summary>
+    /// The spawned food
+    /// </summary>
     public List<GameObject> spawnedFood;
 
+    /// <summary>
+    /// The colors
+    /// </summary>
     Color[] colors = new Color[]
     {
         new Color(1f, 0f, 0f),     // Czerwony
@@ -30,6 +51,9 @@ public class FoodSpawner : MonoBehaviour
         new Color(0f, 0f, 0f),     // Czarny
     };
 
+    /// <summary>
+    /// Starts this instance.
+    /// </summary>
     void Start()
     {
         // Initialize the list to hold spawned food
@@ -40,6 +64,10 @@ public class FoodSpawner : MonoBehaviour
     }
 
     // Function to spawn multiple food items
+    /// <summary>
+    /// Spawns the food.
+    /// </summary>
+    /// <param name="count">The count.</param>
     void SpawnFood(int count)
     {
         for (int i = 0; spawnedFood.Count <= 200; i++)
@@ -54,6 +82,8 @@ public class FoodSpawner : MonoBehaviour
                 float maxScale = 0.80f;
                 float randomScale = Random.Range(minScale, maxScale);
                 food.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
+                Food foodComponent = food.GetComponent<Food>();
+                foodComponent.FoodMass = randomScale * 2;
                 SpriteRenderer renderer = food.GetComponent<SpriteRenderer>();
                 Color randomColor = colors[Random.Range(0, colors.Length)];
                 renderer.material.color = randomColor;
@@ -64,6 +94,10 @@ public class FoodSpawner : MonoBehaviour
     }
 
     // Function to get a random position within the defined spawn area
+    /// <summary>
+    /// Gets the random position.
+    /// </summary>
+    /// <returns></returns>
     public Vector2 GetRandomPosition()
     {
         float x = Random.Range(spawnAreaMin.x, spawnAreaMax.x);
@@ -72,6 +106,15 @@ public class FoodSpawner : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Determines whether [is valid spawn position] [the specified position].
+    /// </summary>
+    /// <param name="position">The position.</param>
+    /// <param name="spawnedFood">The spawned food.</param>
+    /// <param name="minimumDistance">The minimum distance.</param>
+    /// <returns>
+    ///   <c>true</c> if [is valid spawn position] [the specified position]; otherwise, <c>false</c>.
+    /// </returns>
     public static bool IsValidSpawnPosition(Vector2 position, List<GameObject> spawnedFood, float minimumDistance = 2f)
 {
     foreach (var food in spawnedFood)

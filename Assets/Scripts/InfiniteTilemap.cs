@@ -3,24 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// 
+/// </summary>
 public class InfiniteTilemap : MonoBehaviour
 {
+    /// <summary>
+    /// The tilemap
+    /// </summary>
     public Tilemap tilemap;
+    /// <summary>
+    /// The main camera
+    /// </summary>
     public Camera mainCamera;
+    /// <summary>
+    /// The tile
+    /// </summary>
     public TileBase tile;
 
+    /// <summary>
+    /// The previous tile position
+    /// </summary>
     private Vector3Int previousTilePosition;
 
+    /// <summary>
+    /// Starts this instance.
+    /// </summary>
     void Start()
     {
         InitialGeneration();
     }
 
+    /// <summary>
+    /// Updates this instance.
+    /// </summary>
     void Update()
     {
         GenerateInfiniteGridOnCamereMovement();
     }
 
+    /// <summary>
+    /// Initials the generation.
+    /// </summary>
     void InitialGeneration()
     {
         Vector3 cameraPosition = mainCamera.transform.position;
@@ -28,6 +52,9 @@ public class InfiniteTilemap : MonoBehaviour
         GenerateInfiniteGrid(tilePosition);
     }
 
+    /// <summary>
+    /// Generates the infinite grid on camere movement.
+    /// </summary>
     void GenerateInfiniteGridOnCamereMovement()
     {
         // Get camera position in world space
@@ -48,6 +75,10 @@ public class InfiniteTilemap : MonoBehaviour
     }
 
     // Generate additional tiles around the current tile position
+    /// <summary>
+    /// Generates the infinite grid.
+    /// </summary>
+    /// <param name="centerTilePosition">The center tile position.</param>
     void GenerateInfiniteGrid(Vector3Int centerTilePosition)
     {
         // Define how far around the camera to generate tiles

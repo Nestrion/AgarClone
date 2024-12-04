@@ -2,12 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class CameraFollowSmooth2D : MonoBehaviour
 {
+    /// <summary>
+    /// The player
+    /// </summary>
     public Transform player;  // Referencja do gracza
+    /// <summary>
+    /// The smooth speed
+    /// </summary>
     public float smoothSpeed = 0.025f;  // Im mniejsza wartość, tym wolniejsza kamera
+    /// <summary>
+    /// The offset
+    /// </summary>
     public Vector3 offset;    // Opcjonalny offset (odstęp) od gracza
 
+    /// <summary>
+    /// Fixeds the update.
+    /// </summary>
     void FixedUpdate()
     {
         // Pozycja docelowa kamery (z zachowaniem pozycji Z kamery)

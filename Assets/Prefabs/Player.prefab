@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.9433962, g: 0.8922329, b: 0.12904951, a: 1}
+  m_Color: {r: 0.37128538, g: 0.7502035, b: 0.6210452, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -179,6 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodSpawner: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!114 &815030439283415066
 MonoBehaviour:
   m_ObjectHideFlags: 0

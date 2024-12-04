@@ -2,31 +2,82 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class EnemyAI : MonoBehaviour
 {
     // References
+    /// <summary>
+    /// The player
+    /// </summary>
     public Transform player; // Reference to the player
+    /// <summary>
+    /// The detection range
+    /// </summary>
     public float detectionRange = 10f; // Range within which the enemy detects the player
+    /// <summary>
+    /// The chase speed
+    /// </summary>
     public float chaseSpeed = 3f; // Speed at which the enemy chases
+    /// <summary>
+    /// The patrol speed
+    /// </summary>
     public float patrolSpeed = 1.5f; // Speed at which the enemy patrols
+    /// <summary>
+    /// The patrol range
+    /// </summary>
     public float patrolRange = 25f; // Range the enemy moves around while patrolling
+    /// <summary>
+    /// The stop distance
+    /// </summary>
     public float stopDistance = 1.5f; // Distance from the player to stop chasing
+    /// <summary>
+    /// The closest food
+    /// </summary>
     public GameObject closestFood;
 
+    /// <summary>
+    /// The growth factor
+    /// </summary>
     public float growthFactor = 0.05f;
+    /// <summary>
+    /// The enemy mass
+    /// </summary>
     public float EnemyMass = 0.05f;
 
     // AI states
+    /// <summary>
+    /// 
+    /// </summary>
     private enum State { Idle, Patrolling, Chasing, Growing }
+    /// <summary>
+    /// The current state
+    /// </summary>
     private State currentState;
 
     // Patrol variables
+    /// <summary>
+    /// The start position
+    /// </summary>
     private Vector2 startPosition; // Starting position of the enemy
+    /// <summary>
+    /// The patrol target
+    /// </summary>
     private Vector2 patrolTarget; // Current patrol target
+    /// <summary>
+    /// The is patrol target reached
+    /// </summary>
     private bool isPatrolTargetReached = true;
 
+    /// <summary>
+    /// The food spawner
+    /// </summary>
     public FoodSpawner foodSpawner;
 
+    /// <summary>
+    /// Starts this instance.
+    /// </summary>
     void Start()
     {
         currentState = State.Patrolling;
@@ -34,6 +85,9 @@ public class EnemyAI : MonoBehaviour
         SetNewPatrolTarget();
     }
 
+    /// <summary>
+    /// Updates this instance.
+    /// </summary>
     void Update()
     {
         switch (currentState)
@@ -55,6 +109,9 @@ public class EnemyAI : MonoBehaviour
         CheckPlayerDistance();
     }
 
+    /// <summary>
+    /// Handles the idle.
+    /// </summary>
     private void HandleIdle()
     {
         // Remain idle until a condition (like time or player proximity) triggers a state change
@@ -64,6 +121,9 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the growing.
+    /// </summary>
     private void HandleGrowing()
     {
         FindClosestFood();
@@ -72,6 +132,9 @@ public class EnemyAI : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Handles the patrolling.
+    /// </summary>
     private void HandlePatrolling()
     {
         if (isPatrolTargetReached)
@@ -89,6 +152,9 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the chasing.
+    /// </summary>
     private void HandleChasing()
     {
         if (Vector2.Distance(transform.position, player.position) > stopDistance)
@@ -103,6 +169,9 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks the player distance.
+    /// </summary>
     private void CheckPlayerDistance()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
@@ -129,6 +198,9 @@ public class EnemyAI : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Sets the new patrol target.
+    /// </summary>
     private void SetNewPatrolTarget()
     {
         isPatrolTargetReached = false;
@@ -141,6 +213,9 @@ public class EnemyAI : MonoBehaviour
     }
 
     // Optional: Debugging to visualize ranges
+    /// <summary>
+    /// Called when [draw gizmos].
+    /// </summary>
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -150,6 +225,9 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(startPosition, patrolRange);
     }
 
+    /// <summary>
+    /// Finds the closest food.
+    /// </summary>
     private void FindClosestFood(){
 
 
@@ -170,6 +248,10 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when [trigger enter2 d].
+    /// </summary>
+    /// <param name="other">The other.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Food"))

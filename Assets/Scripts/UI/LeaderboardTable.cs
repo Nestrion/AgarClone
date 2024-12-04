@@ -2,27 +2,63 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class LeaderboardTable : MonoBehaviour
 {
+    /// <summary>
+    /// The entry container
+    /// </summary>
     private Transform entryContainer;
+    /// <summary>
+    /// The entry template
+    /// </summary>
     private Transform entryTemplate;
+    /// <summary>
+    /// The leaderboard entry transform list
+    /// </summary>
     private List<Transform> leaderboardEntryTransformList;
 
+    /// <summary>
+    /// The template offset
+    /// </summary>
     private float templateOffset = 2f;
+    /// <summary>
+    /// The template height
+    /// </summary>
     private float templateHeight = 22f;
 
     // TODO: should be a reference to a manager which stores this number
+    /// <summary>
+    /// The base score
+    /// </summary>
     public int baseScore = 0;
 
+    /// <summary>
+    /// The local player entry name
+    /// </summary>
     public string LocalPlayerEntryName = null;
 
     // cached from AddLocalPlayerEntryTransform
+    /// <summary>
+    /// The local player entry transform
+    /// </summary>
     private Transform localPlayerEntryTransform;
 
+    /// <summary>
+    /// The maximum highscores
+    /// </summary>
     private static int maximumHighscores = 10;
 
+    /// <summary>
+    /// The local player added
+    /// </summary>
     private bool localPlayerAdded = false;
 
+    /// <summary>
+    /// Updates this instance.
+    /// </summary>
     private void Update()
     {
         if (LocalPlayerEntryName != null && !localPlayerAdded)
@@ -33,6 +69,9 @@ public class LeaderboardTable : MonoBehaviour
         UpdateLocalPlayerEntryTransformPositionBelowTop();
     }
 
+    /// <summary>
+    /// Awakes this instance.
+    /// </summary>
     private void Awake()
     {
         entryContainer = transform.Find("LeaderboardEntryContainer");
@@ -43,6 +82,11 @@ public class LeaderboardTable : MonoBehaviour
         leaderboardEntryTransformList = new List<Transform>();
     }
 
+    /// <summary>
+    /// Updates the name of the entry by player.
+    /// </summary>
+    /// <param name="playerName">Name of the player.</param>
+    /// <param name="newScore">The new score.</param>
     public void UpdateEntryByPlayerName(string playerName, int newScore)
     {
         Transform entry = leaderboardEntryTransformList.Find(x => x.GetComponent<LeaderboardEntry>().PlayerName == playerName);
@@ -52,11 +96,20 @@ public class LeaderboardTable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the entry for local player.
+    /// </summary>
+    /// <param name="newScore">The new score.</param>
     public void UpdateEntryForLocalPlayer(int newScore)
     {
         UpdateEntryByPlayerName(LocalPlayerEntryName, newScore);
     }
 
+    /// <summary>
+    /// Updates the entry.
+    /// </summary>
+    /// <param name="entryTransform">The entry transform.</param>
+    /// <param name="newScore">The new score.</param>
     private void UpdateEntry(Transform entryTransform, int newScore)
     {
         int idx = leaderboardEntryTransformList.IndexOf(entryTransform);
@@ -119,6 +172,10 @@ public class LeaderboardTable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Adds the entry.
+    /// </summary>
+    /// <param name="name">The name.</param>
     public void AddEntry(string name)
     {
         Transform entryTransform = CreateLeaderboardEntryTransform(baseScore, name);
@@ -126,6 +183,9 @@ public class LeaderboardTable : MonoBehaviour
         SetEntryVisiblity(entryTransform);
     }
 
+    /// <summary>
+    /// Adds the local player entry.
+    /// </summary>
     private void AddLocalPlayerEntry()
     {
         Transform entryTransform = CreateLeaderboardEntryTransform(baseScore, LocalPlayerEntryName);
@@ -138,6 +198,12 @@ public class LeaderboardTable : MonoBehaviour
         localPlayerEntryTransform = entryTransform;
     }
 
+    /// <summary>
+    /// Creates the leaderboard entry transform.
+    /// </summary>
+    /// <param name="score">The score.</param>
+    /// <param name="name">The name.</param>
+    /// <returns></returns>
     private Transform CreateLeaderboardEntryTransform(int score, string name)
     {
         Transform entryTransform = Instantiate(entryTemplate, entryContainer);
@@ -148,6 +214,10 @@ public class LeaderboardTable : MonoBehaviour
     }
 
     // new entries are added to the back of the list
+    /// <summary>
+    /// Sets the new entry transform position.
+    /// </summary>
+    /// <param name="entryTransform">The entry transform.</param>
     private void SetNewEntryTransformPosition(Transform entryTransform)
     {
         RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
@@ -163,6 +233,10 @@ public class LeaderboardTable : MonoBehaviour
         leaderboardEntryTransformList.Add(entryTransform);
     }
 
+    /// <summary>
+    /// Updates the transform position.
+    /// </summary>
+    /// <param name="entryTransform">The entry transform.</param>
     private void UpdateTransformPosition(Transform entryTransform)
     {
         RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
@@ -175,6 +249,9 @@ public class LeaderboardTable : MonoBehaviour
         entryTransform.Find("PlayerNameText").GetComponent<TMP_Text>().text = entryTransform.GetComponent<LeaderboardEntry>().PlayerName;
     }
 
+    /// <summary>
+    /// Updates the local player entry transform position below top.
+    /// </summary>
     private void UpdateLocalPlayerEntryTransformPositionBelowTop()
     {
         if (localPlayerEntryTransform != null)
@@ -188,6 +265,10 @@ public class LeaderboardTable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the entry visiblity.
+    /// </summary>
+    /// <param name="entry">The entry.</param>
     private void SetEntryVisiblity(Transform entry)
     {
         if (leaderboardEntryTransformList.IndexOf(entry) >= maximumHighscores)

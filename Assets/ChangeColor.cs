@@ -2,10 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class ChangeColor : MonoBehaviour
 {
+    /// <summary>
+    /// The sprite
+    /// </summary>
     public SpriteRenderer sprite;
 
+    /// <summary>
+    /// Colors the changer.
+    /// </summary>
     public void ColorChanger()
     {
         if (sprite == null)

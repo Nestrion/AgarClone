@@ -1,22 +1,53 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 
+/// </summary>
 public class Virus : MonoBehaviour
 {
+    /// <summary>
+    /// The small circle prefab
+    /// </summary>
     public GameObject smallCirclePrefab; // Prefab mniejszych kół
+    /// <summary>
+    /// The explosion force
+    /// </summary>
     public float explosionForce = 5f; // Siła rozrzutu małych kół
+    /// <summary>
+    /// The chunk size
+    /// </summary>
     public float chunkSize = 10f; // Bazowa masa kulki
+    /// <summary>
+    /// The pull force
+    /// </summary>
     public float pullForce = 1f; // Siła przyciągania do oryginalnego gracza
+    /// <summary>
+    /// The base stop distance
+    /// </summary>
     public float baseStopDistance = 1.5f; // Odległość zatrzymania przyciągania
+    /// <summary>
+    /// The mass stop scale factor
+    /// </summary>
     public float massStopScaleFactor = 0.1f; // Skala odległości zatrzymania na podstawie masy
 
+    /// <summary>
+    /// The audio manager
+    /// </summary>
     private AudioManager audioManager;
 
+    /// <summary>
+    /// Starts this instance.
+    /// </summary>
     private void Start()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
+    /// <summary>
+    /// Called when [collision enter2 d].
+    /// </summary>
+    /// <param name="collision">The collision.</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.GetComponent<CircleCollider2D>().radius * collision.transform.lossyScale.x);
@@ -82,6 +113,11 @@ public class Virus : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Merges the balls after delay.
+    /// </summary>
+    /// <param name="delay">The delay.</param>
+    /// <returns></returns>
     private IEnumerator MergeBallsAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);

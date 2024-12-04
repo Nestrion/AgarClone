@@ -1,17 +1,32 @@
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class PlayerMovements : MonoBehaviour
 {
+    /// <summary>
+    /// The speed
+    /// </summary>
     public float speed = 4f;
 
     // Distance from the player in screen space at which player achieves max speed
+    /// <summary>
+    /// The maximum speed radius
+    /// </summary>
     [SerializeField, Range(0.1f, 1)] private float maxSpeedRadius = 0.25f;
 
+    /// <summary>
+    /// Updates this instance.
+    /// </summary>
     void Update()
     {
         Move();
     }
 
+    /// <summary>
+    /// Moves this instance.
+    /// </summary>
     void Move()
     {
         Camera cam = Camera.main;

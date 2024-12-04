@@ -2,22 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
+    /// <summary>
+    /// The player
+    /// </summary>
     Player player;
+    /// <summary>
+    /// The food
+    /// </summary>
     public GameObject Food;
+    /// <summary>
+    /// The split distance
+    /// </summary>
     private float splitDistance = 0.5f; // Distance the new player will be created from the original player
+    /// <summary>
+    /// The minimum mass to split
+    /// </summary>
     private float minMassToSplit = 10f; // Minimum mass required to allow splitting
+    /// <summary>
+    /// The split velocity
+    /// </summary>
     private float splitVelocity = 10f; // Initial velocity for the split player
+    /// <summary>
+    /// The food mass
+    /// </summary>
     private float foodMass = 0.5f; // Mass of each food dropped
+    /// <summary>
+    /// The food speed
+    /// </summary>
     public float foodSpeed = 2f; // Speed of the dropped food
+    /// <summary>
+    /// The minimum mass to drop
+    /// </summary>
     public float minimumMassToDrop = 10f; // Minimum mass required to drop food
 
+    /// <summary>
+    /// The audio manager
+    /// </summary>
     private AudioManager audioManager;
+    /// <summary>
+    /// The main camera
+    /// </summary>
     Camera mainCamera;
+    /// <summary>
+    /// The target orthographic size
+    /// </summary>
     private float targetOrthographicSize;
+    /// <summary>
+    /// The lerp speed
+    /// </summary>
     private float lerpSpeed = 2f;
 
+    /// <summary>
+    /// Starts this instance.
+    /// </summary>
     private void Start()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -25,6 +67,9 @@ public class PlayerController : MonoBehaviour
         targetOrthographicSize = mainCamera.orthographicSize;
     }
 
+    /// <summary>
+    /// Updates this instance.
+    /// </summary>
     private void Update()
     {
         player = GetComponent<Player>();
@@ -41,6 +86,9 @@ public class PlayerController : MonoBehaviour
         mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * lerpSpeed);
     }
 
+    /// <summary>
+    /// Splits the player.
+    /// </summary>
     private void SplitPlayer()
     {
         if (player != null)
@@ -94,6 +142,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Merges the balls after delay.
+    /// </summary>
+    /// <param name="delay">The delay.</param>
+    /// <returns></returns>
     private IEnumerator MergeBallsAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -111,6 +164,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Drops the mass as food.
+    /// </summary>
     private void DropMassAsFood()
     {
         // Check if the player has enough mass to drop food
@@ -133,6 +189,10 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Called when [trigger enter2 d].
+    /// </summary>
+    /// <param name="other">The other.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))
@@ -147,6 +207,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Reduces the velocity over time.
+    /// </summary>
+    /// <param name="rb">The rb.</param>
+    /// <returns></returns>
     private IEnumerator ReduceVelocityOverTime(Rigidbody2D rb)
 {
     // Wait for 2 seconds

@@ -1,13 +1,34 @@
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public class SplitPlayer : MonoBehaviour
 {
+    /// <summary>
+    /// The original player
+    /// </summary>
     public Player originalPlayer; // Reference to the original player
+    /// <summary>
+    /// The pull force
+    /// </summary>
     public float pullForce = 1f; // Strength of the pulling force
+    /// <summary>
+    /// The base stop distance
+    /// </summary>
     public float baseStopDistance = 1.5f; // Base distance at which pulling stops
+    /// <summary>
+    /// The mass stop scale factor
+    /// </summary>
     public float massStopScaleFactor = 0.1f; // Factor to scale stop distance based on player mass
+    /// <summary>
+    /// The minimum distance to stop
+    /// </summary>
     private float minimumDistanceToStop = 2f; // Minimum distance from the original player after splitting
 
+    /// <summary>
+    /// Updates this instance.
+    /// </summary>
     private void Update()
     {
         if (originalPlayer != null)

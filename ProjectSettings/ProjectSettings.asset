@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: TemporaryGames
+  companyName: "ProgramowanieZespo\u0142owe"
   productName: AgarClone
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
