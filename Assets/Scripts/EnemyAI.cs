@@ -1,3 +1,5 @@
+//using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
@@ -9,9 +11,12 @@ public class EnemyAI : MonoBehaviour
     public float patrolSpeed = 1.5f; // Speed at which the enemy patrols
     public float patrolRange = 25f; // Range the enemy moves around while patrolling
     public float stopDistance = 1.5f; // Distance from the player to stop chasing
+    public GameObject closestFood;
+
+    public float growthFactor = 0.05f;
 
     // AI states
-    private enum State { Idle, Patrolling, Chasing }
+    private enum State { Idle, Patrolling, Chasing, Growing }
     private State currentState;
 
     // Patrol variables
@@ -19,9 +24,11 @@ public class EnemyAI : MonoBehaviour
     private Vector2 patrolTarget; // Current patrol target
     private bool isPatrolTargetReached = true;
 
+    public FoodSpawner foodSpawner;
+
     void Start()
     {
-        currentState = State.Idle;
+        currentState = State.Patrolling;
         startPosition = transform.position;
         SetNewPatrolTarget();
     }
@@ -39,6 +46,9 @@ public class EnemyAI : MonoBehaviour
             case State.Chasing:
                 HandleChasing();
                 break;
+            case State.Growing:
+                HandleGrowing();
+                break;
         }
 
         CheckPlayerDistance();
@@ -51,6 +61,14 @@ public class EnemyAI : MonoBehaviour
         {
             transform.position = Vector2.MoveTowards(transform.position, startPosition, patrolSpeed * Time.deltaTime);
         }
+    }
+
+    private void HandleGrowing()
+    {
+        FindClosestFood();
+
+        transform.position = Vector2.MoveTowards(transform.position, closestFood.transform.position, patrolSpeed * Time.deltaTime);
+        
     }
 
     private void HandlePatrolling()
@@ -96,6 +114,18 @@ public class EnemyAI : MonoBehaviour
         {
             currentState = State.Patrolling;
         }
+
+        else if (currentState == State.Patrolling && transform.lossyScale.x < player.lossyScale.x)
+        {
+            currentState = State.Growing;
+        }
+
+        else if (currentState == State.Growing && transform.lossyScale.x >= player.lossyScale.x)
+        {
+            currentState = State.Patrolling;
+        }
+
+
     }
 
     private void SetNewPatrolTarget()
@@ -117,5 +147,50 @@ public class EnemyAI : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(startPosition, patrolRange);
+    }
+
+    private void FindClosestFood(){
+
+
+        float closestDistance = float.MaxValue;
+        //GameObject closestFood;
+
+        foreach (var food in foodSpawner.spawnedFood)
+        {
+            if (food != null)
+            {
+                float distance = Vector2.Distance(transform.position, food.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestFood = food;
+                }
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Food"))
+        {
+            // Increase the enemy's mass and size
+            Food food = other.GetComponent<Food>();
+            if (food != null)
+            {
+                // Grow the enemy visually
+                transform.localScale += Vector3.one * growthFactor;
+
+                // Relocate the food
+                Vector2 newPosition = foodSpawner.GetRandomPosition();
+                food.Relocate(newPosition);
+            }
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            if (transform.lossyScale.x < player.transform.lossyScale.x){
+                Destroy(gameObject);
+            }
+        }
     }
 }

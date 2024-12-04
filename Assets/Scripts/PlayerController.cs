@@ -156,6 +156,17 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(ReduceVelocityOverTime(rb));
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            if (player.transform.lossyScale.x > other.transform.lossyScale.x) {
+                player.transform.localScale += Vector3.one * (other.transform.lossyScale.x * 0.5f); // DO ZMIANY
+                //Debug.Log("eat");          
+            }
+        }
+    }
+
     private IEnumerator ReduceVelocityOverTime(Rigidbody2D rb)
 {
     // Wait for 2 seconds
