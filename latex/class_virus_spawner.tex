@@ -1,0 +1,81 @@
+\doxysection{Virus\+Spawner Class Reference}
+\label{class_virus_spawner}\index{VirusSpawner@{VirusSpawner}}
+
+
+Inheritance diagram for Virus\+Spawner\+:
+% FIG 0
+
+
+Collaboration diagram for Virus\+Spawner\+:
+% FIG 1
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Vector2 \textbf{ Get\+Random\+Position} ()
+\begin{DoxyCompactList}\small\item\em Gets the random position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \textbf{ Is\+Valid\+Spawn\+Position} (Vector2 position, List$<$ Game\+Object $>$ spawned\+Objects, float minimum\+Distance)
+\begin{DoxyCompactList}\small\item\em Determines whether [is valid spawn position] [the specified position]. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\label{class_virus_spawner_aabb7e550117d54a0df83e845991b679a} 
+Game\+Object {\bfseries Virus}
+\begin{DoxyCompactList}\small\item\em The virus. \end{DoxyCompactList}\item 
+\label{class_virus_spawner_a9d481df5fa1c0682766e5f6d361d7d84} 
+int {\bfseries virus\+Count} = 5
+\begin{DoxyCompactList}\small\item\em The virus count. \end{DoxyCompactList}\item 
+\label{class_virus_spawner_a5a817a05cade100160ddecd67ab71903} 
+Vector2 {\bfseries spawn\+Area\+Min} = new Vector2(-\/28, -\/28)
+\begin{DoxyCompactList}\small\item\em The spawn area minimum. \end{DoxyCompactList}\item 
+\label{class_virus_spawner_a4492b0b8942c622590db47c2bcb3eb65} 
+Vector2 {\bfseries spawn\+Area\+Max} = new Vector2(28, 28)
+\begin{DoxyCompactList}\small\item\em The spawn area maximum. \end{DoxyCompactList}\item 
+\label{class_virus_spawner_a51cb678a59c2dccc8b47aca96be27dc4} 
+float {\bfseries minimum\+Distance\+Between\+Viruses} = 5f
+\begin{DoxyCompactList}\small\item\em The minimum distance between viruses. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\index{VirusSpawner@{VirusSpawner}!GetRandomPosition@{GetRandomPosition}}
+\index{GetRandomPosition@{GetRandomPosition}!VirusSpawner@{VirusSpawner}}
+\doxysubsubsection{GetRandomPosition()}
+{\footnotesize\ttfamily \label{class_virus_spawner_ad15618ba413773fbfe4d53a849e31d35} 
+Vector2 Virus\+Spawner.\+Get\+Random\+Position (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets the random position. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\index{VirusSpawner@{VirusSpawner}!IsValidSpawnPosition@{IsValidSpawnPosition}}
+\index{IsValidSpawnPosition@{IsValidSpawnPosition}!VirusSpawner@{VirusSpawner}}
+\doxysubsubsection{IsValidSpawnPosition()}
+{\footnotesize\ttfamily \label{class_virus_spawner_a0696bae4a279a7c999746ce62770b2cc} 
+static bool Virus\+Spawner.\+Is\+Valid\+Spawn\+Position (\begin{DoxyParamCaption}\item[{Vector2}]{position}{, }\item[{List$<$ Game\+Object $>$}]{spawned\+Objects}{, }\item[{float}]{minimum\+Distance}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Determines whether [is valid spawn position] [the specified position]. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The position.\\
+\hline
+{\em spawned\+Objects} & The spawned objects.\\
+\hline
+{\em minimum\+Distance} & The minimum distance.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if [is valid spawn position] [the specified position]; otherwise, {\ttfamily false}. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Scripts/Virus\+Spawner.\+cs\end{DoxyCompactItemize}
