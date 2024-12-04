@@ -1215,6 +1215,7 @@ MonoBehaviour:
   stopDistance: 1.5
   closestFood: {fileID: 0}
   growthFactor: 0.05
+  EnemyMass: 0.05
   foodSpawner: {fileID: 1746323193}
 --- !u!212 &453019286
 SpriteRenderer:
@@ -2724,6 +2725,7 @@ MonoBehaviour:
   stopDistance: 1.5
   closestFood: {fileID: 0}
   growthFactor: 0.05
+  EnemyMass: 0.05
   foodSpawner: {fileID: 1746323193}
 --- !u!212 &1092509839
 SpriteRenderer:
@@ -3247,6 +3249,7 @@ MonoBehaviour:
   stopDistance: 1.5
   closestFood: {fileID: 0}
   growthFactor: 0.05
+  EnemyMass: 0.05
   foodSpawner: {fileID: 1746323193}
 --- !u!212 &1315679188
 SpriteRenderer:
@@ -4124,6 +4127,7 @@ MonoBehaviour:
   stopDistance: 1.5
   closestFood: {fileID: 0}
   growthFactor: 0.05
+  EnemyMass: 0.05
   foodSpawner: {fileID: 1746323193}
 --- !u!212 &1900000000
 SpriteRenderer:
@@ -4333,9 +4337,17 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6675979965023244372, guid: 971a2c2b94d49274682218f2266a47d1, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 1899999999}
+    - target: {fileID: 6675979965023244372, guid: 971a2c2b94d49274682218f2266a47d1, type: 3}
       propertyPath: foodSpawner
       value: 
       objectReference: {fileID: 1746323193}
+    - target: {fileID: 7414462437123626218, guid: 971a2c2b94d49274682218f2266a47d1, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7917356057796686541, guid: 971a2c2b94d49274682218f2266a47d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

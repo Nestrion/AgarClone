@@ -12,6 +12,7 @@ public class FoodConsumer : MonoBehaviour
     // will refactor
     Player player;
     public FoodSpawner foodSpawner;
+    public EnemyAI enemy;
 
     Camera mainCamera;
 
@@ -41,9 +42,10 @@ public class FoodConsumer : MonoBehaviour
     {
         float distanceBetweenCenters = Vector2.Distance(transform.position, other.transform.position);
 
+        Food food = other.gameObject.GetComponent<Food>();
         if (distanceBetweenCenters <= circleCollider2D.radius * transform.lossyScale.x)
             {
-                Food food = other.gameObject.GetComponent<Food>();
+                //Food food = other.gameObject.GetComponent<Food>();
                 if (food != null)
                 {
                     // Get a new valid position for the food

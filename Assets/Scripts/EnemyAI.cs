@@ -14,6 +14,7 @@ public class EnemyAI : MonoBehaviour
     public GameObject closestFood;
 
     public float growthFactor = 0.05f;
+    public float EnemyMass = 0.05f;
 
     // AI states
     private enum State { Idle, Patrolling, Chasing, Growing }
@@ -179,6 +180,7 @@ public class EnemyAI : MonoBehaviour
             {
                 // Grow the enemy visually
                 transform.localScale += Vector3.one * growthFactor;
+                EnemyMass += food.FoodMass;
 
                 // Relocate the food
                 Vector2 newPosition = foodSpawner.GetRandomPosition();

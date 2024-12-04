@@ -14,10 +14,15 @@ public class PlayerController : MonoBehaviour
     public float minimumMassToDrop = 10f; // Minimum mass required to drop food
 
     private AudioManager audioManager;
+    Camera mainCamera;
+    private float targetOrthographicSize;
+    private float lerpSpeed = 2f;
 
     private void Start()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        mainCamera = Camera.main;
+        targetOrthographicSize = mainCamera.orthographicSize;
     }
 
     private void Update()
@@ -33,6 +38,7 @@ public class PlayerController : MonoBehaviour
             DropMassAsFood();
         }
         player.UpdateScale();
+        mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * lerpSpeed);
     }
 
     private void SplitPlayer()
@@ -115,9 +121,6 @@ public class PlayerController : MonoBehaviour
             // Get the mouse position in world space
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            // Call the FoodSpawner to spawn food near the player
-            SpawnFoodNearPlayer(transform.position, mousePosition, foodMass, foodSpeed);
-
             // Odtwórz dźwięk zrzucania masy
             audioManager.Play("DropMass");
 
@@ -129,40 +132,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SpawnFoodNearPlayer(Vector2 playerPosition, Vector2 mousePosition, float foodMass, float foodSpeed)
-    {
-        // Calculate direction towards the mouse
-        Vector2 directionToMouse = (mousePosition - playerPosition).normalized;
-
-        // Spawn position near the player in the direction of the mouse
-        Vector2 spawnPosition = playerPosition + directionToMouse * (0.09f * player.PlayerMass);
-
-        // Instantiate the food at the calculated spawn position
-        GameObject food = Instantiate(Food, spawnPosition, Quaternion.identity);
-
-        // Assign mass (you can set it to player mass or the defined food mass)
-        Rigidbody2D rb = food.GetComponent<Rigidbody2D>();
-        rb.mass = foodMass;
-
-        food.transform.localScale = food.transform.localScale * 1.5f;
-
-        SpriteRenderer renderer = food.GetComponent<SpriteRenderer>();
-        Color randomColor = new Color(1f, 1f, 0f);
-        renderer.material.color = randomColor;
-
-        // Apply initial velocity towards the mouse position
-        rb.velocity = directionToMouse * foodSpeed;
-
-        StartCoroutine(ReduceVelocityOverTime(rb));
-    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))
         {
             if (player.transform.lossyScale.x > other.transform.lossyScale.x) {
-                player.transform.localScale += Vector3.one * (other.transform.lossyScale.x * 0.5f); // DO ZMIANY
-                //Debug.Log("eat");          
+                EnemyAI enemy = other.gameObject.GetComponent<EnemyAI>();
+                player.PlayerScore += (int)enemy.EnemyMass;
+                player.PlayerMass += enemy.EnemyMass;
+                //Debug.Log("gained: " + enemy.EnemyMass);       
+                targetOrthographicSize += player.PlayerMass * 0.001f;   
             }
         }
     }
