@@ -85,23 +85,23 @@ public class FoodConsumer : MonoBehaviour
 
         Food food = other.gameObject.GetComponent<Food>();
         if (distanceBetweenCenters <= circleCollider2D.radius * transform.lossyScale.x)
+        {
+            //Food food = other.gameObject.GetComponent<Food>();
+            if (food != null)
             {
-                //Food food = other.gameObject.GetComponent<Food>();
-                if (food != null)
-                {
-                    // Get a new valid position for the food
-                    Vector2 newPosition = foodSpawner.GetRandomPosition();
-                    food.Relocate(newPosition);
+                // Get a new valid position for the food
+                Vector2 newPosition = foodSpawner.GetRandomPosition();
+                food.Relocate(newPosition);
 
-                    // Odtwórz dźwięk jedzenia
-                    audioManager.Play("FoodSound");
+                // Odtwórz dźwięk jedzenia
+                audioManager.Play("FoodSound");
 
-                    // Update player properties
-                    player.PlayerScore += 1;
-                    player.PlayerMass += food.FoodMass;
-                    targetOrthographicSize += player.PlayerMass * 0.001f;
-                }
+                // Update player properties
+                player.PlayerScore += 1;
+                player.PlayerMass += food.FoodMass;
+                targetOrthographicSize += player.PlayerMass * 0.001f;
             }
+        }
     }
 
 }

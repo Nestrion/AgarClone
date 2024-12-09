@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6675979965023244372}
   - component: {fileID: 815030439283415066}
   - component: {fileID: 3750018795464662940}
+  - component: {fileID: 1008376276388560637}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -208,3 +209,15 @@ MonoBehaviour:
   Food: {fileID: 4199708226420983361, guid: 15705f75533436c4e9d9d321c105cc9f, type: 3}
   foodSpeed: 2
   minimumMassToDrop: 10
+--- !u!114 &1008376276388560637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4865793246995771434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f25fb685d87cde468f8b4725f62d346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

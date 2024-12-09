@@ -135,10 +135,10 @@ public class PlayerController : MonoBehaviour
 
             Debug.Log("PLAYER NOW: " + player.PlayerMass.ToString());
             Debug.Log("SPLITTED: " + playerSplitted.PlayerMass.ToString());
-    
+
             StartCoroutine(MergeBallsAfterDelay(20f));
 
-            
+
         }
     }
 
@@ -197,12 +197,13 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            if (player.transform.lossyScale.x > other.transform.lossyScale.x) {
+            if (player.transform.lossyScale.x > other.transform.lossyScale.x)
+            {
                 EnemyAI enemy = other.gameObject.GetComponent<EnemyAI>();
                 player.PlayerScore += (int)enemy.EnemyMass;
                 player.PlayerMass += enemy.EnemyMass;
                 //Debug.Log("gained: " + enemy.EnemyMass);       
-                targetOrthographicSize += player.PlayerMass * 0.001f;   
+                targetOrthographicSize += player.PlayerMass * 0.001f;
             }
         }
     }
@@ -213,15 +214,15 @@ public class PlayerController : MonoBehaviour
     /// <param name="rb">The rb.</param>
     /// <returns></returns>
     private IEnumerator ReduceVelocityOverTime(Rigidbody2D rb)
-{
-    // Wait for 2 seconds
-    yield return new WaitForSeconds(2f);
+    {
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(2f);
 
-    // Gradually apply drag to reduce velocity smoothly
-    rb.drag = 2f; // Adjust drag value based on how quickly you want it to slow down
+        // Gradually apply drag to reduce velocity smoothly
+        rb.drag = 2f; // Adjust drag value based on how quickly you want it to slow down
 
-    // Optionally, reset the drag value after a while if you don't want it to last forever
-    yield return new WaitForSeconds(2f); // Keep drag for an additional 2 seconds
-    rb.drag = 0f; // Reset drag after deceleration period
-}
+        // Optionally, reset the drag value after a while if you don't want it to last forever
+        yield return new WaitForSeconds(2f); // Keep drag for an additional 2 seconds
+        rb.drag = 0f; // Reset drag after deceleration period
+    }
 }
