@@ -96,10 +96,15 @@ public class FoodConsumer : MonoBehaviour
                 // Odtwórz dźwięk jedzenia
                 audioManager.Play("FoodSound");
 
-                // Update player properties
                 player.PlayerScore += 1;
-                player.PlayerMass += food.FoodMass;
-                targetOrthographicSize += player.PlayerMass * 0.001f;
+
+                GameCircle playerCircle = GetComponent<GameCircle>();
+                GameCircle foodCircle = food.GetComponent<GameCircle>();
+                playerCircle.CombineCircles(foodCircle);
+
+                player.UpdateScale();
+
+                targetOrthographicSize += playerCircle.GameCircleSizeScale() * 0.01f;
             }
         }
     }

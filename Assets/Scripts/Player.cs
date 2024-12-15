@@ -16,10 +16,7 @@ public class Player : MonoBehaviour
     /// The player name
     /// </summary>
     public string playerName = "placeholder";
-    /// <summary>
-    /// The player mass
-    /// </summary>
-    private float playerMass = 10f;
+
     /// <summary>
     /// Const scale shift
     /// </summary>
@@ -69,18 +66,6 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets or sets the player mass.
-    /// </summary>
-    /// <value>
-    /// The player mass.
-    /// </value>
-    public float PlayerMass
-    {
-        get { return playerMass; }
-        set { playerMass = value; }
-    }
-
-    /// <summary>
     /// Starts this instance.
     /// </summary>
     private void Start()
@@ -94,13 +79,15 @@ public class Player : MonoBehaviour
     public void UpdateScale()
     {
         GameCircle gameCircle = GetComponent<GameCircle>();
-        player.transform.localScale = new Vector3(gameCircle.GameCircleSizeScale(),
-                                                  gameCircle.GameCircleSizeScale(),
-                                                  gameCircle.GameCircleSizeScale());
-    }
-
-    public void Update()
-    {
-        Debug.Log("Player mass: " + player.PlayerMass + " | Player score: " + player.PlayerScore);
+        if (gameCircle != null)
+        {
+            gameCircle.transform.localScale = new Vector3(gameCircle.GameCircleSizeScale(),
+                                                          gameCircle.GameCircleSizeScale(),
+                                                          gameCircle.GameCircleSizeScale());
+        }
+        else
+        {
+            Debug.Log("no game circle");
+        }
     }
 }

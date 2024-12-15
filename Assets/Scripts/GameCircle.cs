@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameCircle : MonoBehaviour
@@ -10,7 +11,7 @@ public class GameCircle : MonoBehaviour
         return Radius / FirstRadius;
     }
 
-    void Start()
+    void Awake()
     {
         AssignWorldSpaceRadius();
         FirstRadius = Radius;
@@ -40,8 +41,18 @@ public class GameCircle : MonoBehaviour
         Radius = Mathf.Sqrt(Radius * Radius + other.Radius * other.Radius);
     }
 
-    public void HalveRadius()
+    public void SubtractCircle(GameCircle other)
     {
-        Radius = Radius / 2;
+        Radius = Mathf.Sqrt(Radius * Radius - other.Radius * other.Radius);
+    }
+
+    public void PropagateFirstRadius(float firstRadius)
+    {
+        FirstRadius = firstRadius;
+    }
+
+    public void HalveCircle()
+    {
+        Radius = Mathf.Sqrt(Radius * Radius / 2);
     }
 }
