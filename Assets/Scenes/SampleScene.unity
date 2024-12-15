@@ -560,7 +560,7 @@ MonoBehaviour:
     pitch: 1.3
     source: {fileID: 0}
   - name: FoodSound
-    clip: {fileID: 8300000, guid: 026b2bbfe2c0b6e4fab8e8d371e0a8ae, type: 3}
+    clip: {fileID: 8300000, guid: 3daf1cf90028716839cf24226834db89, type: 3}
     volume: 0.25
     pitch: 1
     source: {fileID: 0}
