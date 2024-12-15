@@ -16,10 +16,11 @@ public class Player : MonoBehaviour
     /// The player name
     /// </summary>
     public string playerName = "placeholder";
+
     /// <summary>
-    /// The player mass
+    /// Const scale shift
     /// </summary>
-    private float playerMass = 10f;
+    private const float massConstScaleShift = 1f;
     /// <summary>
     /// Gets or sets a value indicating whether this instance is splitted.
     /// </summary>
@@ -65,24 +66,11 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets or sets the player mass.
-    /// </summary>
-    /// <value>
-    /// The player mass.
-    /// </value>
-    public float PlayerMass
-    {
-        get { return playerMass; }
-        set { playerMass = value; }
-    }
-
-    /// <summary>
     /// Starts this instance.
     /// </summary>
     private void Start()
     {
-        player = GetComponent<Player>();
-        player.transform.localScale = new Vector3(player.PlayerMass * 0.1f, player.PlayerMass * 0.1f, player.PlayerMass * 0.1f);
+        UpdateScale();
     }
 
     /// <summary>
@@ -90,8 +78,16 @@ public class Player : MonoBehaviour
     /// </summary>
     public void UpdateScale()
     {
-        player = GetComponent<Player>();
-        player.transform.localScale = Vector3.MoveTowards(player.transform.localScale, new Vector3(playerMass * 0.1f, playerMass * 0.1f, playerMass * 0.1f), 0.001f * playerMass);
+        GameCircle gameCircle = GetComponent<GameCircle>();
+        if (gameCircle != null)
+        {
+            gameCircle.transform.localScale = new Vector3(gameCircle.GameCircleSizeScale(),
+                                                          gameCircle.GameCircleSizeScale(),
+                                                          gameCircle.GameCircleSizeScale());
+        }
+        else
+        {
+            Debug.Log("no game circle");
+        }
     }
-
 }

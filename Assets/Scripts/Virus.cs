@@ -15,10 +15,6 @@ public class Virus : MonoBehaviour
     /// </summary>
     public float explosionForce = 5f; // Siła rozrzutu małych kół
     /// <summary>
-    /// The chunk size
-    /// </summary>
-    public float chunkSize = 10f; // Bazowa masa kulki
-    /// <summary>
     /// The pull force
     /// </summary>
     public float pullForce = 1f; // Siła przyciągania do oryginalnego gracza
@@ -57,10 +53,10 @@ public class Virus : MonoBehaviour
 
         // Sprawdź, czy obiekt, który dotknął wirusa, to gracz
         if (collision.gameObject.CompareTag("Player") &&
-            collision.gameObject.GetComponent<CircleCollider2D>().radius * collision.transform.lossyScale.x >
-            gameObject.GetComponent<CircleCollider2D>().radius * transform.lossyScale.x)
+            collision.gameObject.GetComponent<GameCircle>().Radius >
+            gameObject.GetComponent<GameCircle>().Radius)
         {
-            
+
 
             GameObject player = collision.gameObject;
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
@@ -69,21 +65,30 @@ public class Virus : MonoBehaviour
             {
                 Vector3 explosionCenter = player.transform.position;
 
-                float playerMass = collision.gameObject.GetComponent<Player>().PlayerMass; // Liczba małych kół po rozpadzie
-                float numberOfSmallCircles = (playerMass / chunkSize) - 1;
-                float lastChunkAdditionalSize = playerMass % chunkSize;
+                GameCircle playerCircle = collision.gameObject.GetComponent<GameCircle>();
+
+                float playerSize = playerCircle.GameCircleSizeScale();
+                int numberOfHalvings = (int)Mathf.Log(playerSize, 2);
 
                 // Odtwórz dźwięk podziału gracza
                 audioManager.Play("SplitVirus");
 
+
+                for (int i = 0; i < numberOfHalvings; i++)
+                {
+                    playerCircle.HalveCircle();
+                }
+                playerCircle.gameObject.GetComponent<Player>().UpdateScale();
+
                 // Rozdzielenie na mniejsze koła
-                for (int i = 0; i < numberOfSmallCircles; i++)
+                for (int i = 0; i < Mathf.Pow(2, numberOfHalvings) - 1; i++)
                 {
                     // Stwórz nowe małe kółka
-                    GameObject smallCircle = Instantiate(smallCirclePrefab, explosionCenter, Quaternion.identity);
+                    GameCircle smallCircle = Instantiate(playerCircle, explosionCenter, Quaternion.identity);
+                    smallCircle.PropagateFirstRadius(playerCircle.FirstRadius);
+                    smallCircle.gameObject.GetComponent<Player>().UpdateScale();
                     smallCircle.tag = "playerSplitted";
 
-                    smallCircle.GetComponent<Player>().PlayerMass = chunkSize;
 
                     // Ustaw ich masę
                     Rigidbody2D rb = smallCircle.GetComponent<Rigidbody2D>();
@@ -92,11 +97,11 @@ public class Virus : MonoBehaviour
                         rb.mass = 3f;
 
                         // Dodaj siłę odpychającą
-                        Vector2 explosionDirection = (Vector2)(Quaternion.Euler(0, 0, (360f / numberOfSmallCircles) * i) * Vector2.right);
+                        Vector2 explosionDirection = (Vector2)(Quaternion.Euler(0, 0, (360f / numberOfHalvings * numberOfHalvings) * i) * Vector2.right);
                         rb.AddForce(explosionDirection * explosionForce, ForceMode2D.Impulse);
 
                         // Dodaj skrypt do przyciągania do oryginalnej pozycji
-                        SplitPlayer splitPlayer = smallCircle.AddComponent<SplitPlayer>();
+                        SplitPlayer splitPlayer = smallCircle.gameObject.AddComponent<SplitPlayer>();
                         splitPlayer.originalPlayer = player.GetComponent<Player>();
                         splitPlayer.pullForce = pullForce;
                         splitPlayer.baseStopDistance = baseStopDistance;
@@ -104,11 +109,8 @@ public class Virus : MonoBehaviour
                     }
                 }
 
-                // Ustaw resztkową masę gracza (co zostało z dzielenia)
-                collision.gameObject.GetComponent<Player>().PlayerMass = lastChunkAdditionalSize;
-
                 // Rozpocznij odliczanie do scalania
-                StartCoroutine(MergeBallsAfterDelay(20f));
+                StartCoroutine(MergeBallsAfterDelay(7f));
             }
         }
     }
@@ -127,23 +129,21 @@ public class Virus : MonoBehaviour
 
         GameObject[] splittedPlayersObjects = GameObject.FindGameObjectsWithTag("playerSplitted");
 
-        float totalMass = 0f; // Suma mas wszystkich rozdzielonych kulek
         Player originalPlayer = null;
 
         foreach (GameObject splittedPlayer in splittedPlayersObjects)
         {
-            Player splitPlayerComponent = splittedPlayer.GetComponent<Player>();
+            GameCircle splitPlayerComponent = splittedPlayer.GetComponent<GameCircle>();
             if (originalPlayer == null)
                 originalPlayer = splittedPlayer.GetComponent<SplitPlayer>().originalPlayer;
 
-            totalMass += splitPlayerComponent.PlayerMass;
+
+            originalPlayer.GetComponent<GameCircle>().CombineCircles(splitPlayerComponent);
             Destroy(splittedPlayer);
         }
 
         if (originalPlayer != null)
         {
-            // Przywróć masę do bazowej + reszta z dzielenia
-            originalPlayer.PlayerMass = chunkSize + totalMass;
             originalPlayer.UpdateScale();
         }
     }

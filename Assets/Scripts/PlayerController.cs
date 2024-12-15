@@ -22,15 +22,12 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// The minimum mass to split
     /// </summary>
-    private float minMassToSplit = 10f; // Minimum mass required to allow splitting
+    private float minCircleScaleToSplit = 2f; // Minimum mass required to allow splitting
     /// <summary>
     /// The split velocity
     /// </summary>
     private float splitVelocity = 10f; // Initial velocity for the split player
-    /// <summary>
-    /// The food mass
-    /// </summary>
-    private float foodMass = 0.5f; // Mass of each food dropped
+
     /// <summary>
     /// The food speed
     /// </summary>
@@ -38,7 +35,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// The minimum mass to drop
     /// </summary>
-    public float minimumMassToDrop = 10f; // Minimum mass required to drop food
+    public float minimumCircleScaleToDrop = 1.1f; // Minimum mass required to drop food
 
     /// <summary>
     /// The audio manager
@@ -91,17 +88,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void SplitPlayer()
     {
-        if (player != null)
+        GameCircle playerCircle = GetComponent<GameCircle>();
+        if (playerCircle != null)
         {
-            Debug.Log("Minimum mass to split: " + minMassToSplit);
             // Check if the player's mass is above the minimum threshold
-            if (player.PlayerMass < minMassToSplit)
+            if (playerCircle.GameCircleSizeScale() < minCircleScaleToSplit)
             {
                 Debug.Log("Cannot split: Player mass is too low.");
                 return; // Exit the function if the mass is too low
             }
-
-            Debug.Log("PLAYER BEFORE: " + player.PlayerMass.ToString());
 
             // Get the mouse position in world coordinates
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -114,10 +109,20 @@ public class PlayerController : MonoBehaviour
             audioManager.Play("SplitVirus");
 
             // Instantiate the new player at the specified distance in the direction of the mouse
-            Player playerSplitted = Instantiate(player, transform.position + direction * splitDistance, Quaternion.identity);
-            player.PlayerMass /= 2f; // Divide mass by 2 for the original player
-            playerSplitted.PlayerMass = player.PlayerMass; // Set the mass of the splitted player
+            GameCircle playerSplitted = Instantiate(playerCircle, transform.position + direction * splitDistance, Quaternion.identity);
+
+            Debug.Log("Before: " + playerCircle.Radius);
+            playerCircle.HalveCircle();
+            playerSplitted.HalveCircle();
+
+            Debug.Log("After: " + playerCircle.Radius);
+            Debug.Log($"Sum: " + $"{playerCircle.Radius + playerSplitted.Radius}");
+
+
+            playerSplitted.PropagateFirstRadius(playerCircle.FirstRadius);
             playerSplitted.tag = "playerSplitted";
+
+            playerSplitted.GetComponent<Player>().UpdateScale();
 
             // Add Rigidbody2D component if it doesn't already exist
             Rigidbody2D rb = playerSplitted.GetComponent<Rigidbody2D>();
@@ -133,12 +138,9 @@ public class PlayerController : MonoBehaviour
             SplitPlayer splitPlayerScript = playerSplitted.gameObject.AddComponent<SplitPlayer>();
             splitPlayerScript.originalPlayer = player; // Set the reference to the original player
 
-            Debug.Log("PLAYER NOW: " + player.PlayerMass.ToString());
-            Debug.Log("SPLITTED: " + playerSplitted.PlayerMass.ToString());
-    
-            StartCoroutine(MergeBallsAfterDelay(20f));
+            StartCoroutine(MergeBallsAfterDelay(7f));
 
-            
+
         }
     }
 
@@ -156,9 +158,15 @@ public class PlayerController : MonoBehaviour
 
         GameObject[] splittedPlayersObjects = GameObject.FindGameObjectsWithTag("playerSplitted");
 
+        GameCircle playerCircle = GetComponent<GameCircle>();
         foreach (GameObject splittedPlayer in splittedPlayersObjects)
         {
-            player.PlayerMass += splittedPlayer.GetComponent<Player>().PlayerMass;
+            // increase size
+            playerCircle.CombineCircles(splittedPlayer.GetComponent<GameCircle>());
+
+            // increase score
+            player.PlayerScore += splittedPlayer.GetComponent<Player>().PlayerScore;
+
             Destroy(splittedPlayer);
             player.UpdateScale();
         }
@@ -169,10 +177,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void DropMassAsFood()
     {
+        GameCircle playerCircle = GetComponent<GameCircle>();
         // Check if the player has enough mass to drop food
-        if (player.PlayerMass > minimumMassToDrop)
+        if (playerCircle.GameCircleSizeScale() > minimumCircleScaleToDrop)
         {
-            player.PlayerMass -= foodMass; // Decrease the player's mass by the food's mass
+            playerCircle.SubtractCircle(Food.GetComponent<GameCircle>());
 
             // Get the mouse position in world space
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -180,11 +189,11 @@ public class PlayerController : MonoBehaviour
             // Odtwórz dźwięk zrzucania masy
             audioManager.Play("DropMass");
 
-            Debug.Log($"Food dropped! Player mass is now {player.PlayerMass}");
+            Debug.Log($"Food dropped! Player size is now {playerCircle.GameCircleSizeScale()}.");
         }
         else
         {
-            Debug.Log("Not enough mass to drop food!");
+            Debug.Log("Not enough size to drop food!");
         }
     }
 
@@ -197,12 +206,18 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            if (player.transform.lossyScale.x > other.transform.lossyScale.x) {
+            if (player.transform.lossyScale.x > other.transform.lossyScale.x)
+            {
+                GameCircle playerCircle = GetComponent<GameCircle>();
+                GameCircle enemyCircle = other.gameObject.GetComponent<GameCircle>();
                 EnemyAI enemy = other.gameObject.GetComponent<EnemyAI>();
-                player.PlayerScore += (int)enemy.EnemyMass;
-                player.PlayerMass += enemy.EnemyMass;
+
+                player.PlayerScore += enemy.EnemyScore;
+                playerCircle.CombineCircles(enemyCircle);
+                player.UpdateScale();
+
                 //Debug.Log("gained: " + enemy.EnemyMass);       
-                targetOrthographicSize += player.PlayerMass * 0.001f;   
+                targetOrthographicSize += playerCircle.GameCircleSizeScale() * 0.01f;
             }
         }
     }
@@ -213,15 +228,15 @@ public class PlayerController : MonoBehaviour
     /// <param name="rb">The rb.</param>
     /// <returns></returns>
     private IEnumerator ReduceVelocityOverTime(Rigidbody2D rb)
-{
-    // Wait for 2 seconds
-    yield return new WaitForSeconds(2f);
+    {
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(2f);
 
-    // Gradually apply drag to reduce velocity smoothly
-    rb.drag = 2f; // Adjust drag value based on how quickly you want it to slow down
+        // Gradually apply drag to reduce velocity smoothly
+        rb.drag = 2f; // Adjust drag value based on how quickly you want it to slow down
 
-    // Optionally, reset the drag value after a while if you don't want it to last forever
-    yield return new WaitForSeconds(2f); // Keep drag for an additional 2 seconds
-    rb.drag = 0f; // Reset drag after deceleration period
-}
+        // Optionally, reset the drag value after a while if you don't want it to last forever
+        yield return new WaitForSeconds(2f); // Keep drag for an additional 2 seconds
+        rb.drag = 0f; // Reset drag after deceleration period
+    }
 }

@@ -46,6 +46,11 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     public float EnemyMass = 0.05f;
 
+    /// <summary>
+    /// The enemy mass
+    /// </summary>
+    public int EnemyScore = 10;
+
     // AI states
     /// <summary>
     /// 
@@ -129,7 +134,7 @@ public class EnemyAI : MonoBehaviour
         FindClosestFood();
 
         transform.position = Vector2.MoveTowards(transform.position, closestFood.transform.position, patrolSpeed * Time.deltaTime);
-        
+
     }
 
     /// <summary>
@@ -228,7 +233,8 @@ public class EnemyAI : MonoBehaviour
     /// <summary>
     /// Finds the closest food.
     /// </summary>
-    private void FindClosestFood(){
+    private void FindClosestFood()
+    {
 
 
         float closestDistance = float.MaxValue;
@@ -263,6 +269,7 @@ public class EnemyAI : MonoBehaviour
                 // Grow the enemy visually
                 transform.localScale += Vector3.one * growthFactor;
                 EnemyMass += food.FoodMass;
+                EnemyScore += 1;
 
                 // Relocate the food
                 Vector2 newPosition = foodSpawner.GetRandomPosition();
@@ -272,7 +279,8 @@ public class EnemyAI : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            if (transform.lossyScale.x < player.transform.lossyScale.x){
+            if (transform.lossyScale.x < player.transform.lossyScale.x)
+            {
                 Destroy(gameObject);
             }
         }

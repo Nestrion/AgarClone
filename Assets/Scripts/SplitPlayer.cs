@@ -40,12 +40,12 @@ public class SplitPlayer : MonoBehaviour
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
             // Calculate dynamic stop distance based on the original player's mass
-            float dynamicStopDistance = baseStopDistance + (originalPlayer.PlayerMass * massStopScaleFactor);
+            float dynamicStopDistance = baseStopDistance + (originalPlayer.gameObject.transform.lossyScale.x * massStopScaleFactor);
 
             // Only apply pulling force if the distance is greater than the minimumDistanceToStop
-            if (distanceToOriginal > minimumDistanceToStop + (originalPlayer.PlayerMass * massStopScaleFactor))
+            if (distanceToOriginal > minimumDistanceToStop + (originalPlayer.gameObject.transform.lossyScale.x * massStopScaleFactor))
             {
-                
+
                 // Apply a pulling force towards the original player
                 Vector3 direction = (originalPlayer.transform.position - transform.position).normalized;
                 if (rb != null)
