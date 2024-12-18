@@ -82,6 +82,7 @@ public class FoodSpawner : MonoBehaviour
                 float maxScale = 0.80f;
                 float randomScale = Random.Range(minScale, maxScale);
                 food.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
+                food.tag = "Food";
                 Food foodComponent = food.GetComponent<Food>();
                 foodComponent.FoodMass = randomScale * 2;
                 SpriteRenderer renderer = food.GetComponent<SpriteRenderer>();

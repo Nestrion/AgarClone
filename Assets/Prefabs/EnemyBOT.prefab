@@ -129,13 +129,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   detectionRange: 10
-  chaseSpeed: 3
-  patrolSpeed: 1.5
-  patrolRange: 5
-  stopDistance: 1.5
+  chaseSpeed: 5
+  patrolSpeed: 3
+  patrolRange: 10
+  stopDistance: 0.1
   closestFood: {fileID: 0}
   growthFactor: 0.05
   EnemyMass: 0.05
+  EnemyScore: 10
   foodSpawner: {fileID: 0}
 --- !u!58 &130295973850958175
 CircleCollider2D:

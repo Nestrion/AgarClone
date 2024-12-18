@@ -31,7 +31,7 @@ public class EnemyAI : MonoBehaviour
     /// <summary>
     /// The stop distance
     /// </summary>
-    public float stopDistance = 1.5f; // Distance from the player to stop chasing
+    public float stopDistance = 0.1f; // Distance from the player to stop chasing
     /// <summary>
     /// The closest food
     /// </summary>
@@ -85,7 +85,7 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     void Start()
     {
-        currentState = State.Patrolling;
+        currentState = State.Growing;
         startPosition = transform.position;
         SetNewPatrolTarget();
     }
@@ -175,15 +175,19 @@ public class EnemyAI : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks the player distance.
+    /// Checks the player distance and decide what action to take.
     /// </summary>
     private void CheckPlayerDistance()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= detectionRange)
+        if (distanceToPlayer <= detectionRange && transform.lossyScale.x > player.lossyScale.x)
         {
             currentState = State.Chasing;
+        }
+        if (distanceToPlayer <= detectionRange && transform.lossyScale.x < player.lossyScale.x)
+        {
+            currentState = State.Growing;
         }
         else if (currentState == State.Chasing && distanceToPlayer > detectionRange)
         {

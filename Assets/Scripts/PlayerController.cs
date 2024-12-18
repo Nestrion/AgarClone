@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            if (player.transform.lossyScale.x > other.transform.lossyScale.x)
+            if (player.transform.lossyScale.x >= other.transform.lossyScale.x)
             {
                 GameCircle playerCircle = GetComponent<GameCircle>();
                 GameCircle enemyCircle = other.gameObject.GetComponent<GameCircle>();
@@ -218,6 +218,13 @@ public class PlayerController : MonoBehaviour
 
                 //Debug.Log("gained: " + enemy.EnemyMass);       
                 targetOrthographicSize += playerCircle.GameCircleSizeScale() * 0.01f;
+            }
+
+            if (player.transform.lossyScale.x < other.transform.lossyScale.x)
+            {
+                Debug.Log("Game Over!");
+                Destroy(gameObject);
+                // TU DODAC EKRAN SMIERCI
             }
         }
     }
