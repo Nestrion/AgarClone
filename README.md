@@ -1,10 +1,9 @@
 # AgarClone
 
 ## Project Overview
-This project is a clone of the popular game **Agar.io**, created using the **Unity** game engine. The goal of the game is for players to control a cell, consume smaller cells and food particles, and grow in size while avoiding larger players. The game supports multiplayer functionality, allowing real-time gameplay over a network.
+This project is a clone of the popular game **Agar.io**, created using the **Unity** game engine. The goal of the game is for players to control a cell, consume smaller cells and food particles, and grow in size while avoiding larger players.
 
 ## Features
-- **Multiplayer**: Real-time multiplayer gameplay using Unity's networking system.
 - **Growth Mechanic**: Players grow in size by consuming smaller cells and food.
 - **Smooth Movement**: Player-controlled cells move smoothly and respond to input intuitively.
 - **Dynamic Gameplay**: The map scales based on player size, ensuring competitive balance.
