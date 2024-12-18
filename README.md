@@ -6,7 +6,7 @@ This project is a clone of the popular game **Agar.io**, created using the **Uni
 ## Features
 - **Growth Mechanic**: Players grow in size by consuming smaller cells and food.
 - **Smooth Movement**: Player-controlled cells move smoothly and respond to input intuitively.
-- **Dynamic Gameplay**: The map scales based on player size, ensuring competitive balance.
+- **Dynamic Gameplay**: The camera scales based on player size.
 - **Leaderboards**: Displays the top players in the game based on size.
 - **Dynamic splitting**: Players can split their cells to chase down smaller players or avoid larger ones.
 
