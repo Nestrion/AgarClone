@@ -223,7 +223,7 @@ public class PlayerController : MonoBehaviour
             if (player.transform.lossyScale.x < other.transform.lossyScale.x)
             {
                 Debug.Log("Game Over!");
-                Destroy(gameObject);
+                gameObject.SetActive(false);
                 // TU DODAC EKRAN SMIERCI
             }
         }
