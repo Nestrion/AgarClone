@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['ui_5fmanager_0',['UI_Manager',['../class_u_i___manager.html',1,'']]]
+  ['sound_0',['Sound',['../class_sound.html',1,'']]],
+  ['splitplayer_1',['SplitPlayer',['../class_split_player.html',1,'']]]
 ];

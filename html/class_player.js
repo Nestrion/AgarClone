@@ -4,7 +4,6 @@ var class_player =
     [ "playerName", "class_player.html#a292e01bbe2c348e7d56426d819e2ffad", null ],
     [ "IsMergingAllowed", "class_player.html#a3d6df14b585187e85e3dccb4d64c2641", null ],
     [ "IsSplitted", "class_player.html#a4ac6d712bff1dc5fff35ed68dfa40091", null ],
-    [ "PlayerMass", "class_player.html#ac4f8e7b658dcc0261c0907b8add48701", null ],
     [ "PlayerScore", "class_player.html#a4ec6e73bbccf57ba0feb4ec827570fc9", null ],
     [ "OnScoreChanged", "class_player.html#ad3002c6e10e41a71de6fe62a98c0dd58", null ]
 ];
