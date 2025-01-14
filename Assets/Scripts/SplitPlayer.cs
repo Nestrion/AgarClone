@@ -20,7 +20,7 @@ public class SplitPlayer : MonoBehaviour
     /// <summary>
     /// The mass stop scale factor
     /// </summary>
-    public float massStopScaleFactor = 1f; // Factor to scale stop distance based on player mass
+    public float massStopScaleFactor = 0.65f; // Factor to scale stop distance based on player mass
     /// <summary>
     /// The minimum distance to stop
     /// </summary>
