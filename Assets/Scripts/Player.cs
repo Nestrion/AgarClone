@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// The player score
     /// </summary>
-    private int playerScore = 0;
+    [SerializeField] private int playerScore = 10;
     /// <summary>
     /// The player name
     /// </summary>

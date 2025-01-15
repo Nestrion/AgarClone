@@ -88,6 +88,8 @@ public class EnemyAI : MonoBehaviour
         currentState = State.Growing;
         startPosition = transform.position;
         SetNewPatrolTarget();
+        UI_Manager.Instance.table.AddEntry(name);
+        UI_Manager.Instance.table.UpdateEntryByPlayerName(name, EnemyScore);
     }
 
     /// <summary>
@@ -112,6 +114,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         CheckPlayerDistance();
+
+        UI_Manager.Instance.table.UpdateEntryByPlayerName(name, EnemyScore);
     }
 
     /// <summary>
@@ -270,10 +274,15 @@ public class EnemyAI : MonoBehaviour
             Food food = other.GetComponent<Food>();
             if (food != null)
             {
+
+                GameCircle enemyCircle = GetComponent<GameCircle>();
+                GameCircle foodCircle = food.GetComponent<GameCircle>();
+                enemyCircle.CombineCircles(foodCircle);
+
                 // Grow the enemy visually
-                transform.localScale += Vector3.one * growthFactor;
-                EnemyMass += food.FoodMass;
                 EnemyScore += 1;
+
+                UpdateScale();
 
                 // Relocate the food
                 Vector2 newPosition = foodSpawner.GetRandomPosition();
@@ -281,12 +290,39 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        if (other.CompareTag("Player"))
+        if (other.GetComponent<Player>())
         {
             if (transform.lossyScale.x < player.transform.lossyScale.x)
             {
                 Destroy(gameObject);
             }
+            else if (transform.lossyScale.x > player.transform.lossyScale.x)
+            {
+
+                EnemyScore += other.GetComponent<Player>().PlayerScore;
+                other.GetComponent<Player>().PlayerScore = 0;
+
+                GameCircle enemyCircle = GetComponent<GameCircle>();
+                GameCircle playerCircle = player.GetComponent<GameCircle>();
+                enemyCircle.CombineCircles(playerCircle);
+
+                UpdateScale();
+            }
+        }
+    }
+
+    public void UpdateScale()
+    {
+        GameCircle gameCircle = GetComponent<GameCircle>();
+        if (gameCircle != null)
+        {
+            gameCircle.transform.localScale = new Vector3(gameCircle.GameCircleSizeScale(),
+                                                          gameCircle.GameCircleSizeScale(),
+                                                          gameCircle.GameCircleSizeScale());
+        }
+        else
+        {
+            Debug.Log("no game circle");
         }
     }
 }
