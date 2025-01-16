@@ -129,8 +129,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   detectionRange: 10
-  chaseSpeed: 3.75
-  patrolSpeed: 3.5
+  chaseSpeed: 3.7
+  patrolSpeed: 3.7
   patrolRange: 10
   stopDistance: 0.1
   closestFood: {fileID: 0}

@@ -1,3 +1,4 @@
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 /// <summary>
@@ -16,15 +17,21 @@ public class SplitPlayer : MonoBehaviour
     /// <summary>
     /// The base stop distance
     /// </summary>
-    public float baseStopDistance = 1.2f; // Base distance at which pulling stops
+    public float baseStopDistance = 1.1f; // Base distance at which pulling stops
     /// <summary>
     /// The mass stop scale factor
     /// </summary>
-    public float massStopScaleFactor = 1f; // Factor to scale stop distance based on player mass
+    public float massStopScaleFactor = 1.2f; // Factor to scale stop distance based on player mass
     /// <summary>
     /// The minimum distance to stop
     /// </summary>
     private float minimumDistanceToStop = 2f; // Minimum distance from the original player after splitting
+
+    private int collisionsEnteredSoFar = 0;
+
+    private bool pullToOriginalPlayer = true;
+
+    private bool fliedAway = false;
 
     /// <summary>
     /// Updates this instance.
@@ -33,40 +40,46 @@ public class SplitPlayer : MonoBehaviour
     {
         if (originalPlayer != null)
         {
-            // Calculate the distance to the original player
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            Debug.Log("velo : " + rb.totalForce.magnitude);
             float distanceToOriginal = Vector3.Distance(originalPlayer.transform.position, transform.position);
 
-            // Get the Rigidbody2D component
-            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (distanceToOriginal > originalPlayer.GetComponent<GameCircle>().GameCircleSizeScale() * 2.1f)
+                fliedAway = true;
 
-            // Calculate dynamic stop distance based on the original player's mass
-            float dynamicStopDistance = baseStopDistance + (originalPlayer.gameObject.transform.lossyScale.x * massStopScaleFactor);
-
-            // Only apply pulling force if the distance is greater than the minimumDistanceToStop
-            if (distanceToOriginal > minimumDistanceToStop + (originalPlayer.gameObject.transform.lossyScale.x * massStopScaleFactor))
+            if (distanceToOriginal > originalPlayer.GetComponent<GameCircle>().GameCircleSizeScale() * 2.1f &&
+                rb.velocity.magnitude < 0.3f)
             {
 
-                // Apply a pulling force towards the original player
-                Vector3 direction = (originalPlayer.transform.position - transform.position).normalized;
-                if (rb != null)
+                if (pullToOriginalPlayer == true)
                 {
-                    rb.AddForce(direction * pullForce);
-                }
-            }
-            else if (distanceToOriginal <= dynamicStopDistance)
-            {
-                // Stop the player when within the dynamic stop distance and moving toward the original player
-                if (rb != null)
-                {
-                    Vector3 directionToPlayer = (originalPlayer.transform.position - transform.position).normalized;
-
-                    // Check if the velocity is moving toward the original player
-                    if (Vector3.Dot(rb.velocity.normalized, directionToPlayer) > 0)
+                    Vector3 direction = (originalPlayer.transform.position - transform.position).normalized;
+                    if (rb != null)
                     {
-                        rb.velocity = Vector2.zero; // Stop all movement
+                        rb.velocity = direction * pullForce;
                     }
                 }
+                else
+                {
+                    rb.velocity = Vector2.zero;
+                }
+            }
+
+
+        }
+    }
+
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (fliedAway)
+        {
+            if (other.gameObject.GetComponent<Player>())
+            {
+                pullToOriginalPlayer = false;
+                Debug.Log("we done it aight");
             }
         }
     }
+
 }

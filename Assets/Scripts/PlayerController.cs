@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Set the initial velocity of the splitted player
-            rb.velocity = direction * splitVelocity / 4; // Assign the velocity in the direction of the mouse
+            rb.AddForce(direction * splitVelocity / 4);
 
             // Attach the SplitPlayer script to the cloned player and set the original player reference
             SplitPlayer splitPlayerScript = playerSplitted.gameObject.AddComponent<SplitPlayer>();
@@ -283,15 +283,15 @@ public class PlayerController : MonoBehaviour
         // Wait for 2 seconds
         yield return new WaitForSeconds(0.4f);
 
-        // Gradually apply drag to reduce velocity smoothly
-        rb.drag += 1.5f; // Adjust drag value based on how quickly you want it to slow down
+        // // Gradually apply drag to reduce velocity smoothly
+        // rb.drag += 1.5f; // Adjust drag value based on how quickly you want it to slow down
 
-        // Optionally, reset the drag value after a while if you don't want it to last forever
-        yield return new WaitForSeconds(0.6f); // Keep drag for an additional 2 seconds
-        rb.drag += 0.5f; // Adjust drag value based on how quickly you want it to slow down
+        // // Optionally, reset the drag value after a while if you don't want it to last forever
+        // yield return new WaitForSeconds(0.6f); // Keep drag for an additional 2 seconds
+        // rb.drag += 0.5f; // Adjust drag value based on how quickly you want it to slow down
 
-        // Optionally, reset the drag value after a while if you don't want it to last forever
-        yield return new WaitForSeconds(1.0f); // Keep drag for an additional 2 seconds
-        rb.drag = 0f; // Adjust drag value based on how quickly you want it to slow down
+        // // Optionally, reset the drag value after a while if you don't want it to last forever
+        // yield return new WaitForSeconds(1.0f); // Keep drag for an additional 2 seconds
+        // rb.drag = 0f; // Adjust drag value based on how quickly you want it to slow down
     }
 }
