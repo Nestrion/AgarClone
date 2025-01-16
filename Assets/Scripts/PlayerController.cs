@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    public GameOverScreen gg;
+    private bool isDead;
     /// <summary>
     /// The player
     /// </summary>
@@ -220,14 +223,18 @@ public class PlayerController : MonoBehaviour
                 targetOrthographicSize += playerCircle.GameCircleSizeScale() * 0.01f;
             }
 
-            if (player.transform.lossyScale.x < other.transform.lossyScale.x)
+            if (player.transform.lossyScale.x < other.transform.lossyScale.x && !isDead)
             {
+                isDead = true;
                 Debug.Log("Game Over!");
                 gameObject.SetActive(false);
                 // TU DODAC EKRAN SMIERCI
+                gg.gameOver();
             }
         }
     }
+
+
 
     /// <summary>
     /// Reduces the velocity over time.
