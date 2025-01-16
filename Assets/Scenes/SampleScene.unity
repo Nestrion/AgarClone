@@ -4517,6 +4517,10 @@ PrefabInstance:
       propertyPath: gg
       value: 
       objectReference: {fileID: 1405803752}
+    - target: {fileID: 3750018795464662940, guid: 971a2c2b94d49274682218f2266a47d1, type: 3}
+      propertyPath: foodSpeed
+      value: 5.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4865793246995771434, guid: 971a2c2b94d49274682218f2266a47d1, type: 3}
       propertyPath: m_Name
       value: Player

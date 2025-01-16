@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// The food speed
     /// </summary>
-    public float foodSpeed = 2f; // Speed of the dropped food
+    public float foodSpeed = 6f; // Speed of the dropped food
     /// <summary>
     /// The minimum mass to drop
     /// </summary>
@@ -189,6 +189,7 @@ public class PlayerController : MonoBehaviour
         // Check if the player has enough mass to drop food
         if (playerCircle.GameCircleSizeScale() > minimumCircleScaleToDrop)
         {
+            player.PlayerScore -= 1;
             playerCircle.SubtractCircle(Food.GetComponent<GameCircle>());
 
             // Get the mouse position in world space
@@ -196,6 +197,7 @@ public class PlayerController : MonoBehaviour
 
             // Odtwórz dźwięk zrzucania masy
             audioManager.Play("DropMass");
+            SpawnFoodNearPlayer(transform.position, mousePosition, foodSpeed);
 
             Debug.Log($"Food dropped! Player size is now {playerCircle.GameCircleSizeScale()}.");
         }
@@ -205,6 +207,32 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void SpawnFoodNearPlayer(Vector2 playerPosition, Vector2 mousePosition, float foodSpeed)
+    {
+        // Calculate direction towards the mouse
+        Vector2 directionToMouse = (mousePosition - playerPosition).normalized;
+
+        float offset = 1.2f;
+        // Spawn position near the player in the direction of the mouse
+        Vector2 spawnPosition = playerPosition + directionToMouse * gameObject.GetComponent<GameCircle>().Radius * offset;
+
+        // Instantiate the food at the calculated spawn position
+        GameObject food = Instantiate(Food, spawnPosition, Quaternion.identity);
+
+        gameObject.GetComponent<GameCircle>().SubtractCircle(food.GetComponent<GameCircle>());
+        // Assign mass (you can set it to player mass or the defined food mass)
+        Rigidbody2D rb = food.GetComponent<Rigidbody2D>();
+
+
+        SpriteRenderer renderer = food.GetComponent<SpriteRenderer>();
+        Color playerColor = gameObject.GetComponent<SpriteRenderer>().color;
+        renderer.material.color = playerColor;
+
+        // Apply initial velocity towards the mouse position
+        rb.velocity = directionToMouse * foodSpeed;
+
+        StartCoroutine(ReduceVelocityOverTime(rb));
+    }
 
     /// <summary>
     /// Called when [trigger enter2 d].
@@ -249,13 +277,12 @@ public class PlayerController : MonoBehaviour
     private IEnumerator ReduceVelocityOverTime(Rigidbody2D rb)
     {
         // Wait for 2 seconds
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.4f);
 
         // Gradually apply drag to reduce velocity smoothly
-        rb.drag = 2f; // Adjust drag value based on how quickly you want it to slow down
+        rb.drag += 1.8f; // Adjust drag value based on how quickly you want it to slow down
 
         // Optionally, reset the drag value after a while if you don't want it to last forever
-        yield return new WaitForSeconds(2f); // Keep drag for an additional 2 seconds
-        rb.drag = 0f; // Reset drag after deceleration period
+        yield return new WaitForSeconds(0.4f); // Keep drag for an additional 2 seconds
     }
 }
