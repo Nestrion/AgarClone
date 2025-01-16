@@ -66,7 +66,7 @@ public class LeaderboardTable : MonoBehaviour
             AddLocalPlayerEntry();
             localPlayerAdded = true;
         }
-        UpdateLocalPlayerEntryTransformPositionBelowTop();
+        // UpdateLocalPlayerEntryTransformPositionBelowTop();
     }
 
     /// <summary>
@@ -99,10 +99,20 @@ public class LeaderboardTable : MonoBehaviour
     /// <summary>
     /// Updates the entry for local player.
     /// </summary>
-    /// <param name="newScore">The new score.</param>
     public void UpdateEntryForLocalPlayer(int newScore)
     {
-        UpdateEntryByPlayerName(LocalPlayerEntryName, newScore);
+        // ! newScore is just left because i was lazy, it has no merit
+        // ! besides api compatibility
+
+        Player[] playerCircles = FindObjectsOfType<Player>();
+        int totalScore = 0;
+        foreach (var circle in playerCircles)
+        {
+            if (circle.isActiveAndEnabled)
+                totalScore += circle.PlayerScore;
+        }
+        Debug.Log("tots score: " + totalScore);
+        UpdateEntryByPlayerName(LocalPlayerEntryName, totalScore);
     }
 
     /// <summary>

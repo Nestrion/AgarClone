@@ -59,6 +59,7 @@ public class Virus : MonoBehaviour
 
 
             GameObject player = collision.gameObject;
+            int scoreBeforeSplit = player.GetComponent<Player>().PlayerScore;
             Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
 
             if (playerRb != null)
@@ -77,6 +78,7 @@ public class Virus : MonoBehaviour
                 for (int i = 0; i < numberOfHalvings; i++)
                 {
                     playerCircle.HalveCircle();
+                    playerCircle.gameObject.GetComponent<Player>().PlayerScore /= 2;
                 }
                 playerCircle.gameObject.GetComponent<Player>().UpdateScale();
 
@@ -108,7 +110,10 @@ public class Virus : MonoBehaviour
                         splitPlayer.massStopScaleFactor = massStopScaleFactor;
                     }
                 }
-
+                if (scoreBeforeSplit % 2 == 1)
+                {
+                    player.GetComponent<Player>().PlayerScore += 1;
+                }
                 // Rozpocznij odliczanie do scalania
                 StartCoroutine(MergeBallsAfterDelay(7f));
             }
@@ -137,7 +142,7 @@ public class Virus : MonoBehaviour
             if (originalPlayer == null)
                 originalPlayer = splittedPlayer.GetComponent<SplitPlayer>().originalPlayer;
 
-
+            originalPlayer.GetComponent<Player>().PlayerScore += splittedPlayer.GetComponent<Player>().PlayerScore;
             originalPlayer.GetComponent<GameCircle>().CombineCircles(splitPlayerComponent);
             Destroy(splittedPlayer);
         }
