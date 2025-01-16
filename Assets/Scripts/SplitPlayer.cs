@@ -16,11 +16,11 @@ public class SplitPlayer : MonoBehaviour
     /// <summary>
     /// The base stop distance
     /// </summary>
-    public float baseStopDistance = 1.5f; // Base distance at which pulling stops
+    public float baseStopDistance = 1.2f; // Base distance at which pulling stops
     /// <summary>
     /// The mass stop scale factor
     /// </summary>
-    public float massStopScaleFactor = 0.65f; // Factor to scale stop distance based on player mass
+    public float massStopScaleFactor = 1f; // Factor to scale stop distance based on player mass
     /// <summary>
     /// The minimum distance to stop
     /// </summary>
