@@ -114,6 +114,11 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Before: " + playerCircle.Radius);
             playerCircle.HalveCircle();
             playerSplitted.HalveCircle();
+            playerCircle.gameObject.GetComponent<Player>().PlayerScore /= 2;
+            if (playerCircle.gameObject.GetComponent<Player>().PlayerScore % 2 == 1)
+                playerCircle.gameObject.GetComponent<Player>().PlayerScore += 1;
+
+            playerSplitted.gameObject.GetComponent<Player>().PlayerScore /= 2;
 
             Debug.Log("After: " + playerCircle.Radius);
             Debug.Log($"Sum: " + $"{playerCircle.Radius + playerSplitted.Radius}");

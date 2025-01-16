@@ -16,11 +16,6 @@ public class PlayerScoreText : MonoBehaviour
     TextMeshProUGUI text;
 
     /// <summary>
-    /// The player
-    /// </summary>
-    public Player player;
-
-    /// <summary>
     /// Starts this instance.
     /// </summary>
     void Start()
@@ -34,7 +29,14 @@ public class PlayerScoreText : MonoBehaviour
     /// </summary>
     void Update()
     {
-        text.text = "Score: " + player.PlayerScore.ToString();
+        Player[] playerCircles = FindObjectsOfType<Player>();
+        int totalScore = 0;
+        foreach (var circle in playerCircles)
+        {
+            if (circle.isActiveAndEnabled)
+                totalScore += circle.PlayerScore;
+        }
+        text.text = "Score: " + totalScore;
     }
 
 }

@@ -16,6 +16,44 @@ public class UI_Manager : MonoBehaviour
     /// </summary>
     public LeaderboardTable table;
 
+    private static UI_Manager _instance;
+
+    /// <summary>
+    /// Gets the instance of the UI_Manager.
+    /// </summary>
+    public static UI_Manager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<UI_Manager>();
+                if (_instance == null)
+                {
+                    GameObject singletonObject = new GameObject();
+                    _instance = singletonObject.AddComponent<UI_Manager>();
+                    singletonObject.name = typeof(UI_Manager).ToString() + " (Singleton)";
+                }
+            }
+            return _instance;
+        }
+    }
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     /// <summary>
     /// Starts this instance.
     /// </summary>
